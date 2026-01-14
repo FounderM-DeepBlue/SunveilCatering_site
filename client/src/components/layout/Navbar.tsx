@@ -44,7 +44,7 @@ export function Navbar() {
               <img 
                 src={logo} 
                 alt="Sunveil Catering" 
-                className="h-24 w-auto transition-transform duration-300 group-hover:scale-105" 
+                className="h-[4.5rem] w-auto transition-transform duration-300 group-hover:scale-105" 
               />
             </a>
           </Link>
