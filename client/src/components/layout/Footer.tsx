@@ -1,5 +1,25 @@
-import { Facebook, Instagram, Twitter, MapPin, Mail, Phone } from "lucide-react";
+import { Facebook, Instagram, MapPin, Mail, Phone } from "lucide-react";
 import logo from "@assets/1_background_removed_1768426374235.png";
+
+// Custom TikTok Icon component to match Lucide style
+function TikTok({ className }: { className?: string }) {
+  return (
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      width="24" 
+      height="24" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      className={className}
+    >
+      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+    </svg>
+  );
+}
 
 export function Footer() {
   return (
@@ -14,7 +34,7 @@ export function Footer() {
             <div className="flex gap-4 pt-2">
               <a href="#" className="hover:text-[hsl(var(--color-amber))] transition-colors"><Instagram className="w-5 h-5" /></a>
               <a href="#" className="hover:text-[hsl(var(--color-amber))] transition-colors"><Facebook className="w-5 h-5" /></a>
-              <a href="#" className="hover:text-[hsl(var(--color-amber))] transition-colors"><Twitter className="w-5 h-5" /></a>
+              <a href="#" className="hover:text-[hsl(var(--color-amber))] transition-colors"><TikTok className="w-5 h-5" /></a>
             </div>
           </div>
 
