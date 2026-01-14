@@ -4,7 +4,7 @@ import { Link } from "wouter";
 import { products as allProducts } from "@/lib/data";
 
 // Select specific signature items for the showcase
-const showcaseIds = ["prod_peach_roll", "prod_blueberry", "prod_zucchini"];
+const showcaseIds = ["prod_sabaayad", "prod_buskud", "prod_rose_danish"];
 const showcaseProducts = allProducts.filter(p => showcaseIds.includes(p.id));
 
 export function ProductShowcase() {

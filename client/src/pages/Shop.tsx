@@ -55,16 +55,13 @@ export default function Shop() {
 
   // Cart Logic
   const addDozenToCart = (productId: string) => {
-    const product = products.find(p => p.id === productId);
-    const type = product?.unit === 'loaf' ? 'loaf' : 'dozen';
-    
-    const newItem: CartItem = {
-      id: `${type}-${Date.now()}`,
-      type: type,
+    const newDozen: CartItem = {
+      id: `dozen-${Date.now()}`,
+      type: 'dozen',
       productId: productId,
       quantity: 1
     };
-    addToCart(newItem);
+    addToCart(newDozen);
   };
 
   return (

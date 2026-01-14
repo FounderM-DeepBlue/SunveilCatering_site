@@ -1,122 +1,188 @@
 // Mock Data for the full application
-import appleCheeseDanishImg from "@assets/stock_images/apple_cheese_danish__a562590c.jpg";
-import classicCheeseDanishImg from "@assets/stock_images/classic_cheese_danis_a21a4764.jpg";
-import strawberryCheeseDanishImg from "@assets/stock_images/strawberry_cheese_da_2e7f0a23.jpg";
-import peachCobblerRollImg from "@assets/stock_images/peach_cobbler_cinnam_9a211a17.jpg";
-import zucchiniImg from "@assets/stock_images/sliced_zucchini_brea_15863cce.jpg";
-import lemonPoppyImg from "@assets/stock_images/lemon_poppy_seed_loa_e95dbf7e.jpg";
-import blueberryMuffinImg from "@assets/stock_images/blueberry_lavender_m_c119bcb4.jpg";
-import appleCupcakeImg from "@assets/stock_images/apple_upside_down_cu_a937e3ed.jpg";
+import sabaayadImg from "@assets/generated_images/sabaayad_flatbread.png";
+import buskudImg from "@assets/generated_images/buskud_biscuits.png";
+import zucchiniImg from "@assets/generated_images/sliced_zucchini_bread.png";
+import bananaImg from "@assets/generated_images/golden_banana_nut_bread.png";
+import cranberryImg from "@assets/generated_images/cranberry_orange_bread.png";
+import lemonImg from "@assets/generated_images/lemon_poppy_seed_bread.png";
+import blueberryImg from "@assets/generated_images/blueberry_muffin_with_sugar_crust.png";
+import morningGloryImg from "@assets/generated_images/morning_glory_muffin.png";
+import cheeseDanishImg from "@assets/generated_images/cheese_danish.png";
+import cinnamonRollImg from "@assets/generated_images/cinnamon_roll.png";
+import butterCroissantImg from "@assets/generated_images/butter_croissant.png";
+import chocCroissantImg from "@assets/generated_images/chocolate_croissant.png";
+import malawahImg from "@assets/generated_images/malawah.png";
+import cambuuloImg from "@assets/generated_images/cambuulo.png";
+import roseDanishImg from "@assets/generated_images/cardamom_rose_danish.png";
+import spicedBananaImg from "@assets/generated_images/somali_spiced_banana_bread.png";
 
 export const products = [
-  // Breads (Loaves)
+  // Breads & Muffins
   { 
     id: "prod_zucchini", 
     name: "Zucchini Bread", 
     somaliName: null, 
-    price: 18, 
+    price: 28, 
     category: "Breads", 
     image: zucchiniImg, 
     desc: "Moist loaf with visible zucchini shreds, spiced with cinnamon and nutmeg.",
-    tags: ["Vegetarian", "Loaf Only"],
-    unit: "loaf",
-    cateringMinimum: 3,
-    cateringUnit: "loaves"
+    tags: ["Vegetarian"]
+  },
+  { 
+    id: "prod_banana", 
+    name: "Banana Nut Bread", 
+    somaliName: null, 
+    price: 28, 
+    category: "Breads", 
+    image: bananaImg, 
+    desc: "Classic golden brown loaf loaded with walnuts and ripe bananas.",
+    tags: ["Vegetarian", "Contains Nuts"]
+  },
+  { 
+    id: "prod_cranberry", 
+    name: "Cranberry Orange Bread", 
+    somaliName: null, 
+    price: 28, 
+    category: "Breads", 
+    image: cranberryImg, 
+    desc: "Vibrant citrus zest meets tart cranberry jewels in this sweet loaf.",
+    tags: ["Vegetarian"]
   },
   { 
     id: "prod_lemon", 
     name: "Lemon Poppy Seed Bread", 
     somaliName: null, 
-    price: 18, 
+    price: 28, 
     category: "Breads", 
-    image: lemonPoppyImg, 
+    image: lemonImg, 
     desc: "Bright, glazed top with poppy seeds throughout. A zesty favorite.",
-    tags: ["Vegetarian", "Loaf Only"],
-    unit: "loaf",
-    cateringMinimum: 3,
-    cateringUnit: "loaves"
+    tags: ["Vegetarian"]
   },
-
-  // Muffins & Cupcakes
   { 
     id: "prod_blueberry", 
-    name: "Blueberry Lavender Muffin", 
+    name: "Blueberry Muffin", 
     somaliName: null, 
     price: 32, 
     category: "Muffins", 
-    image: blueberryMuffinImg, 
-    desc: "Bursting with fresh blueberries and infused with delicate lavender.",
-    tags: ["Vegetarian"],
-    unit: "dozen",
-    cateringMinimum: 2,
-    cateringUnit: "dozen"
+    image: blueberryImg, 
+    desc: "Bursting with fresh blueberries and topped with a sugar crust.",
+    tags: ["Vegetarian"]
   },
   { 
-    id: "prod_apple_cupcake", 
-    name: "Apple Upside Down Cupcakes", 
+    id: "prod_morning", 
+    name: "Morning Glory Muffin", 
     somaliName: null, 
-    price: 30, 
-    category: "Cupcakes", 
-    image: appleCupcakeImg, 
-    desc: "Caramelized apple topping on a moist spiced cake base.",
-    tags: ["Vegetarian"],
-    unit: "dozen",
-    cateringMinimum: 2,
-    cateringUnit: "dozen"
+    price: 32, 
+    category: "Muffins", 
+    image: morningGloryImg, 
+    desc: "Hearty start to the day with carrots, raisins, coconut, and nuts.",
+    tags: ["Vegetarian", "Contains Nuts"]
   },
 
   // Danish & Rolls
   { 
-    id: "prod_apple_danish", 
-    name: "Apple Cheese Danish", 
+    id: "prod_cheese_danish", 
+    name: "Cheese Danish", 
     somaliName: null, 
     price: 35, 
-    category: "Danish", 
-    image: appleCheeseDanishImg, 
-    desc: "Flaky pastry filled with sweet cream cheese and spiced apples.",
-    tags: ["Vegetarian"],
-    unit: "dozen",
-    cateringMinimum: 2,
-    cateringUnit: "dozen"
+    category: "Pastries", 
+    image: cheeseDanishImg, 
+    desc: "Flaky pastry layers with a sweet, glistening cream cheese center.",
+    tags: ["Vegetarian"]
   },
   { 
-    id: "prod_classic_danish", 
-    name: "Classic Cheese Danish", 
-    somaliName: null, 
-    price: 35, 
-    category: "Danish", 
-    image: classicCheeseDanishImg, 
-    desc: "Traditional flaky pastry with a rich, smooth cream cheese center.",
-    tags: ["Vegetarian"],
-    unit: "dozen",
-    cateringMinimum: 2,
-    cateringUnit: "dozen"
-  },
-  { 
-    id: "prod_strawberry_danish", 
-    name: "Strawberry Cheese Danish", 
-    somaliName: null, 
-    price: 35, 
-    category: "Danish", 
-    image: strawberryCheeseDanishImg, 
-    desc: "Our classic cheese danish topped with fresh strawberry glaze.",
-    tags: ["Vegetarian"],
-    unit: "dozen",
-    cateringMinimum: 2,
-    cateringUnit: "dozen"
-  },
-  { 
-    id: "prod_peach_roll", 
-    name: "Peach Cobbler Cinnamon Rolls", 
+    id: "prod_cinnamon", 
+    name: "Cinnamon Roll", 
     somaliName: null, 
     price: 36, 
-    category: "Rolls", 
-    image: peachCobblerRollImg, 
-    desc: "Soft cinnamon rolls topped with peaches and cobbler crumble.",
-    tags: ["Vegetarian"],
-    unit: "dozen",
-    cateringMinimum: 2,
-    cateringUnit: "dozen"
+    category: "Pastries", 
+    image: cinnamonRollImg, 
+    desc: "Soft dough swirled with cinnamon sugar and topped with cream cheese frosting.",
+    tags: ["Vegetarian"]
+  },
+  { 
+    id: "prod_croissant", 
+    name: "Butter Croissant", 
+    somaliName: null, 
+    price: 30, 
+    category: "Pastries", 
+    image: butterCroissantImg, 
+    desc: "Classic French technique. Golden, shattered flaky layers.",
+    tags: ["Vegetarian"]
+  },
+  { 
+    id: "prod_choc_croissant", 
+    name: "Chocolate Croissant", 
+    somaliName: null, 
+    price: 34, 
+    category: "Pastries", 
+    image: chocCroissantImg, 
+    desc: "Dark chocolate batons wrapped in buttery, flaky pastry dough.",
+    tags: ["Vegetarian"]
+  },
+
+  // Somali Specialties
+  { 
+    id: "prod_sabaayad", 
+    name: "Somali Flatbread", 
+    somaliName: "Sabaayad", 
+    price: 24, 
+    category: "Somali Specialties", 
+    image: sabaayadImg, 
+    desc: "Flaky, multi-layered flatbread pan-fried to golden perfection.",
+    tags: ["Vegetarian", "Halal"]
+  },
+  { 
+    id: "prod_buskud", 
+    name: "Cardamom Biscuits", 
+    somaliName: "Buskud", 
+    price: 24, 
+    category: "Somali Specialties", 
+    image: buskudImg, 
+    desc: "Buttery, crumbly biscuits infused with aromatic cardamom.",
+    tags: ["Vegetarian", "Halal"]
+  },
+  { 
+    id: "prod_malawah", 
+    name: "Sweet Crepe", 
+    somaliName: "Malawah", 
+    price: 24, 
+    category: "Somali Specialties", 
+    image: malawahImg, 
+    desc: "Delicate, honeycomb-textured sweet crepe, perfect with tea.",
+    tags: ["Vegetarian", "Halal"]
+  },
+  { 
+    id: "prod_cambuulo", 
+    name: "Sweet Bean Dish", 
+    somaliName: "Cambuulo", 
+    price: 20, 
+    category: "Somali Specialties", 
+    image: cambuuloImg, 
+    desc: "Traditional comfort dish of azuki beans and corn with butter and sugar.",
+    tags: ["Vegetarian", "Halal", "Gluten-Free"]
+  },
+
+  // Fusion
+  { 
+    id: "prod_rose_danish", 
+    name: "Cardamom Rose Danish", 
+    somaliName: null, 
+    price: 38, 
+    category: "Fusion", 
+    image: roseDanishImg, 
+    desc: "Elegant danish pastry infused with rose water and cardamom.",
+    tags: ["Vegetarian", "Halal"]
+  },
+  { 
+    id: "prod_spiced_banana", 
+    name: "Somali Spiced Banana Bread", 
+    somaliName: null, 
+    price: 30, 
+    category: "Fusion", 
+    image: spicedBananaImg, 
+    desc: "Our classic banana bread spiced with Xawaash blend.",
+    tags: ["Vegetarian", "Halal"]
   }
 ];
 
@@ -128,7 +194,7 @@ export const locations = [
     address: "1800 Jonesboro Rd SE, Atlanta, GA 30315",
     hours: "Mon-Sat 7am-4pm",
     phone: "(555) 123-4567",
-    products: ["prod_apple_danish", "prod_blueberry", "prod_zucchini"],
+    products: ["prod_sabaayad", "prod_buskud", "prod_blueberry", "prod_zucchini"],
     lat: 33.7083,
     lng: -84.3733
   },
@@ -150,7 +216,7 @@ export const locations = [
     address: "519 Memorial Dr SE, Atlanta, GA 30312",
     hours: "Daily 8am-9pm",
     phone: "(555) 987-6543",
-    products: ["prod_peach_roll", "prod_lemon", "prod_classic_danish"],
+    products: ["prod_banana", "prod_buskud", "prod_cinnamon"],
     lat: 33.7466,
     lng: -84.3734
   },
@@ -161,9 +227,8 @@ export const locations = [
     address: "4170 E Ponce de Leon Ave, Clarkston, GA 30021",
     hours: "Mon-Sat 7am-6pm",
     phone: "(404) 555-0123",
-    products: ["prod_strawberry_danish", "prod_apple_cupcake"],
+    products: ["prod_sabaayad", "prod_croissant", "prod_malawah"],
     lat: 33.8095,
     lng: -84.2428
   }
 ];
-
