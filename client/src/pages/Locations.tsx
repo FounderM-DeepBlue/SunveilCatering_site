@@ -5,6 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { renderToStaticMarkup } from "react-dom/server";
+import { Link } from "wouter";
 
 const locations = [
   {
@@ -151,9 +152,11 @@ export default function Locations() {
                <h3 className="font-serif font-bold text-2xl md:text-3xl mb-4">Want Sunveil at your local shop?</h3>
                <p className="mb-8 opacity-90 max-w-xl mx-auto">Let us know where you'd like to see our pastries next, or if you're a business owner looking to partner.</p>
                <div className="flex gap-4 justify-center">
-                  <button className="bg-transparent border border-[hsl(var(--color-cream))] text-[hsl(var(--color-cream))] px-6 py-3 rounded-full font-bold hover:bg-[hsl(var(--color-cream))] hover:text-[hsl(var(--color-deep-forest))] transition-colors">
-                    Become a Partner
-                  </button>
+                  <Link href="/catering">
+                    <button className="bg-transparent border border-[hsl(var(--color-cream))] text-[hsl(var(--color-cream))] px-6 py-3 rounded-full font-bold hover:bg-[hsl(var(--color-cream))] hover:text-[hsl(var(--color-deep-forest))] transition-colors cursor-pointer">
+                      Become a Partner
+                    </button>
+                  </Link>
                </div>
             </div>
          </div>
