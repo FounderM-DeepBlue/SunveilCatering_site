@@ -42,7 +42,7 @@ export function ProductCard({ product, onAddToBox, onAddDozen, isInBox = false }
         
         {/* Availability Badge */}
         <div className="absolute top-2 right-2 bg-white/90 backdrop-blur text-xs font-bold px-2 py-1 rounded shadow-sm">
-          ${product.price}/dz
+          ${product.price}/{product.unit === 'loaf' ? 'loaf' : 'dz'}
         </div>
         
         {/* Category Badge */}
@@ -54,7 +54,7 @@ export function ProductCard({ product, onAddToBox, onAddDozen, isInBox = false }
       <div className="p-4 flex flex-col flex-grow">
         <div className="flex-grow">
           <div className="flex justify-between items-start mb-1">
-            <h3 className="font-serif font-bold text-xl text-[hsl(var(--color-deep-forest))] group-hover:text-[hsl(var(--color-forest))] transition-colors">
+            <h3 className="font-serif font-bold text-lg leading-tight text-[hsl(var(--color-deep-forest))] group-hover:text-[hsl(var(--color-forest))] transition-colors">
               {product.name}
             </h3>
           </div>
@@ -80,25 +80,27 @@ export function ProductCard({ product, onAddToBox, onAddDozen, isInBox = false }
         </div>
         
         <div className="flex flex-col gap-2 mt-auto">
-          {/* Add to Mixed Box Button */}
-          <motion.button
-            onClick={handleAddToBox}
-            whileTap={{ scale: 0.95 }}
-            className={cn(
-              "w-full font-bold py-2 rounded-md transition-all flex items-center justify-center gap-2 text-sm",
-              isAddedToBox || isInBox
-                ? "bg-[hsl(var(--color-cream))] text-[hsl(var(--color-forest))] border border-[hsl(var(--color-forest))]"
-                : "bg-white text-[hsl(var(--color-deep-forest))] border border-[hsl(var(--color-deep-forest))] hover:bg-[hsl(var(--color-cream))]"
-            )}
-          >
-            {isAddedToBox ? (
-               <span className="flex items-center gap-2"><Check className="w-4 h-4" /> Added to Box</span>
-            ) : (
-               <span className="flex items-center gap-2"><Plus className="w-4 h-4" /> Add to Mixed Box</span>
-            )}
-          </motion.button>
+          {/* Add to Mixed Box Button - Only for non-loaf items */}
+          {product.unit !== 'loaf' && (
+            <motion.button
+              onClick={handleAddToBox}
+              whileTap={{ scale: 0.95 }}
+              className={cn(
+                "w-full font-bold py-2 rounded-md transition-all flex items-center justify-center gap-2 text-sm",
+                isAddedToBox || isInBox
+                  ? "bg-[hsl(var(--color-cream))] text-[hsl(var(--color-forest))] border border-[hsl(var(--color-forest))]"
+                  : "bg-white text-[hsl(var(--color-deep-forest))] border border-[hsl(var(--color-deep-forest))] hover:bg-[hsl(var(--color-cream))]"
+              )}
+            >
+              {isAddedToBox ? (
+                 <span className="flex items-center gap-2"><Check className="w-4 h-4" /> Added to Box</span>
+              ) : (
+                 <span className="flex items-center gap-2"><Plus className="w-4 h-4" /> Add to Mixed Box</span>
+              )}
+            </motion.button>
+          )}
 
-          {/* Add Full Dozen Button */}
+          {/* Add Full Dozen/Loaf Button */}
           <motion.button
             onClick={handleAddDozen}
             whileTap={{ scale: 0.95 }}
@@ -110,9 +112,9 @@ export function ProductCard({ product, onAddToBox, onAddDozen, isInBox = false }
             )}
           >
             {isAddedDozen ? (
-               <span className="flex items-center gap-2"><Check className="w-4 h-4" /> Added Dozen</span>
+               <span className="flex items-center gap-2"><Check className="w-4 h-4" /> Added {product.unit === 'loaf' ? 'Loaf' : 'Dozen'}</span>
             ) : (
-               <span className="flex items-center gap-2">Add Dozen (${product.price})</span>
+               <span className="flex items-center gap-2">Add {product.unit === 'loaf' ? 'Loaf' : 'Dozen'} (${product.price})</span>
             )}
           </motion.button>
         </div>
