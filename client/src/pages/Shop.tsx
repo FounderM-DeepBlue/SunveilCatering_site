@@ -29,7 +29,8 @@ export default function Shop() {
 
   // Box Logic
   const addToBox = (productId: string) => {
-    if (boxItems.length < 12) {
+    const product = products.find(p => p.id === productId);
+    if (product && product.unitType === 'dozen' && boxItems.length < 12) {
       setBoxItems([...boxItems, productId]);
     }
   };

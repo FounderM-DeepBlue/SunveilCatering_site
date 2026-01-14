@@ -42,7 +42,7 @@ export function ProductCard({ product, onAddToBox, onAddDozen, isInBox = false }
         
         {/* Availability Badge */}
         <div className="absolute top-2 right-2 bg-white/90 backdrop-blur text-xs font-bold px-2 py-1 rounded shadow-sm">
-          ${product.price}/dz
+          ${product.price} {product.unitLabel}
         </div>
         
         {/* Category Badge */}
@@ -66,13 +66,18 @@ export function ProductCard({ product, onAddToBox, onAddDozen, isInBox = false }
           )}
           
           <p className="text-sm text-[hsl(var(--color-moss))]/70 mb-4 line-clamp-2">
-            {product.desc}
+            {product.description}
           </p>
 
           {/* Tags */}
           <div className="flex flex-wrap gap-1 mb-4">
             {product.tags?.map((tag: string) => (
-              <span key={tag} className="text-[10px] px-1.5 py-0.5 bg-[hsl(var(--color-cream))] border border-[hsl(var(--color-border))] rounded text-[hsl(var(--color-moss))]/60">
+              <span key={tag} className={cn(
+                "text-[10px] px-1.5 py-0.5 border rounded font-medium",
+                tag === "Signature" 
+                  ? "bg-[hsl(var(--color-amber))] text-[hsl(var(--color-deep-forest))] border-[hsl(var(--color-amber))]" 
+                  : "bg-[hsl(var(--color-cream))] border-[hsl(var(--color-border))] text-[hsl(var(--color-moss))]/60"
+              )}>
                 {tag}
               </span>
             ))}
@@ -80,41 +85,63 @@ export function ProductCard({ product, onAddToBox, onAddDozen, isInBox = false }
         </div>
         
         <div className="flex flex-col gap-2 mt-auto">
-          {/* Add to Mixed Box Button */}
-          <motion.button
-            onClick={handleAddToBox}
-            whileTap={{ scale: 0.95 }}
-            className={cn(
-              "w-full font-bold py-2 rounded-md transition-all flex items-center justify-center gap-2 text-sm",
-              isAddedToBox || isInBox
-                ? "bg-[hsl(var(--color-cream))] text-[hsl(var(--color-forest))] border border-[hsl(var(--color-forest))]"
-                : "bg-white text-[hsl(var(--color-deep-forest))] border border-[hsl(var(--color-deep-forest))] hover:bg-[hsl(var(--color-cream))]"
-            )}
-          >
-            {isAddedToBox ? (
-               <span className="flex items-center gap-2"><Check className="w-4 h-4" /> Added to Box</span>
-            ) : (
-               <span className="flex items-center gap-2"><Plus className="w-4 h-4" /> Add to Mixed Box</span>
-            )}
-          </motion.button>
+          {product.unitType === 'dozen' ? (
+            <>
+              {/* Add to Mixed Box Button */}
+              <motion.button
+                onClick={handleAddToBox}
+                whileTap={{ scale: 0.95 }}
+                className={cn(
+                  "w-full font-bold py-2 rounded-md transition-all flex items-center justify-center gap-2 text-sm",
+                  isAddedToBox || isInBox
+                    ? "bg-[hsl(var(--color-cream))] text-[hsl(var(--color-forest))] border border-[hsl(var(--color-forest))]"
+                    : "bg-white text-[hsl(var(--color-deep-forest))] border border-[hsl(var(--color-deep-forest))] hover:bg-[hsl(var(--color-cream))]"
+                )}
+              >
+                {isAddedToBox ? (
+                   <span className="flex items-center gap-2"><Check className="w-4 h-4" /> Added to Box</span>
+                ) : (
+                   <span className="flex items-center gap-2"><Plus className="w-4 h-4" /> Add to Mixed Box</span>
+                )}
+              </motion.button>
 
-          {/* Add Full Dozen Button */}
-          <motion.button
-            onClick={handleAddDozen}
-            whileTap={{ scale: 0.95 }}
-            className={cn(
-              "w-full font-bold py-2 rounded-md transition-all flex items-center justify-center gap-2 text-sm",
-              isAddedDozen
-                ? "bg-[hsl(var(--color-forest))] text-white"
-                : "bg-[hsl(var(--color-deep-forest))] text-white hover:bg-[hsl(var(--color-forest))]"
-            )}
-          >
-            {isAddedDozen ? (
-               <span className="flex items-center gap-2"><Check className="w-4 h-4" /> Added Dozen</span>
-            ) : (
-               <span className="flex items-center gap-2">Add Dozen (${product.price})</span>
-            )}
-          </motion.button>
+              {/* Add Full Dozen Button */}
+              <motion.button
+                onClick={handleAddDozen}
+                whileTap={{ scale: 0.95 }}
+                className={cn(
+                  "w-full font-bold py-2 rounded-md transition-all flex items-center justify-center gap-2 text-sm",
+                  isAddedDozen
+                    ? "bg-[hsl(var(--color-forest))] text-white"
+                    : "bg-[hsl(var(--color-deep-forest))] text-white hover:bg-[hsl(var(--color-forest))]"
+                )}
+              >
+                {isAddedDozen ? (
+                   <span className="flex items-center gap-2"><Check className="w-4 h-4" /> Added Dozen</span>
+                ) : (
+                   <span className="flex items-center gap-2">Add Dozen (${product.price})</span>
+                )}
+              </motion.button>
+            </>
+          ) : (
+             /* Loaf / Single Item CTA */
+             <motion.button
+                onClick={handleAddDozen} // Reusing handler for single items
+                whileTap={{ scale: 0.95 }}
+                className={cn(
+                  "w-full font-bold py-2 rounded-md transition-all flex items-center justify-center gap-2 text-sm",
+                  isAddedDozen
+                    ? "bg-[hsl(var(--color-forest))] text-white"
+                    : "bg-[hsl(var(--color-deep-forest))] text-white hover:bg-[hsl(var(--color-forest))]"
+                )}
+              >
+                {isAddedDozen ? (
+                   <span className="flex items-center gap-2"><Check className="w-4 h-4" /> Added to Cart</span>
+                ) : (
+                   <span className="flex items-center gap-2">Add to Order (${product.price})</span>
+                )}
+              </motion.button>
+          )}
         </div>
       </div>
     </motion.div>
