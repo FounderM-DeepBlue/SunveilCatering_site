@@ -8,9 +8,10 @@ interface DozenBoxBuilderProps {
   products: any[];
   onRemoveItem: (index: number) => void;
   onClearBox: () => void;
+  onCompleteBox: () => void;
 }
 
-export function DozenBoxBuilder({ items, products, onRemoveItem, onClearBox }: DozenBoxBuilderProps) {
+export function DozenBoxBuilder({ items, products, onRemoveItem, onClearBox, onCompleteBox }: DozenBoxBuilderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const maxItems = 12;
   const currentCount = items.length;
@@ -75,6 +76,7 @@ export function DozenBoxBuilder({ items, products, onRemoveItem, onClearBox }: D
               <div className="ml-4">
                  {isComplete ? (
                    <motion.button
+                     onClick={(e) => { e.stopPropagation(); onCompleteBox(); }}
                      whileHover={{ scale: 1.05 }}
                      whileTap={{ scale: 0.95 }}
                      className="bg-[hsl(var(--color-forest))] text-white px-6 py-2 rounded-full font-bold text-sm shadow-lg flex items-center gap-2"

@@ -1,22 +1,31 @@
 import { useState } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { Filter, Map as MapIcon, Grid, Search } from "lucide-react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { Filter, Map as MapIcon, Grid, Search, ShoppingBag } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
 import { DozenBoxBuilder } from "@/components/DozenBoxBuilder";
+import { CartDrawer } from "@/components/CartDrawer";
 import { products, locations } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-// Mock Google Maps setup (since we don't have a real API key in this env)
-const containerStyle = { width: '100%', height: '100%' };
-const center = { lat: 33.7490, lng: -84.3880 }; // Atlanta
+// Types for Cart
+interface CartItem {
+  id: string;
+  type: 'box' | 'dozen';
+  items?: string[];
+  productId?: string;
+  quantity: number;
+}
 
 export default function Shop() {
   const [viewMode, setViewMode] = useState<'grid' | 'map'>('grid');
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [boxItems, setBoxItems] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  
+  // Cart State
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   // Categories derived from products
   const categories = ["All", ...Array.from(new Set(products.map(p => p.category)))];
@@ -41,6 +50,36 @@ export default function Shop() {
     setBoxItems(newItems);
   };
 
+  const completeBox = () => {
+    if (boxItems.length === 12) {
+      const newBox: CartItem = {
+        id: `box-${Date.now()}`,
+        type: 'box',
+        items: [...boxItems],
+        quantity: 1
+      };
+      setCart([...cart, newBox]);
+      setBoxItems([]);
+      setIsCartOpen(true);
+    }
+  };
+
+  // Cart Logic
+  const addDozenToCart = (productId: string) => {
+    const newDozen: CartItem = {
+      id: `dozen-${Date.now()}`,
+      type: 'dozen',
+      productId: productId,
+      quantity: 1
+    };
+    setCart([...cart, newDozen]);
+    setIsCartOpen(true);
+  };
+
+  const removeCartItem = (id: string) => {
+    setCart(cart.filter(item => item.id !== id));
+  };
+
   return (
     <div className="min-h-screen bg-[hsl(var(--color-cream))] font-sans">
       <Navbar />
@@ -53,21 +92,13 @@ export default function Shop() {
               <p className="text-[hsl(var(--color-moss))]/70">Find your favorites for delivery or at a local shop.</p>
             </div>
             
-            {/* View Toggle */}
-            <div className="flex bg-white rounded-lg border border-[hsl(var(--color-border))] p-1 self-start">
-              <button 
-                onClick={() => setViewMode('grid')}
-                className={cn("px-4 py-2 rounded-md flex items-center gap-2 text-sm font-medium transition-colors", viewMode === 'grid' ? "bg-[hsl(var(--color-forest))] text-white" : "text-[hsl(var(--color-moss))] hover:bg-[hsl(var(--color-cream))]")}
-              >
-                <Grid className="w-4 h-4" /> Menu
-              </button>
-              <button 
-                onClick={() => setViewMode('map')}
-                className={cn("px-4 py-2 rounded-md flex items-center gap-2 text-sm font-medium transition-colors", viewMode === 'map' ? "bg-[hsl(var(--color-forest))] text-white" : "text-[hsl(var(--color-moss))] hover:bg-[hsl(var(--color-cream))]")}
-              >
-                <MapIcon className="w-4 h-4" /> Locations
-              </button>
-            </div>
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="fixed bottom-24 right-4 z-50 md:static md:z-auto bg-[hsl(var(--color-forest))] text-white px-6 py-3 rounded-full font-bold shadow-lg flex items-center gap-2 hover:bg-[hsl(var(--color-deep-forest))] transition-all"
+            >
+              <ShoppingBag className="w-5 h-5" />
+              <span>Cart ({cart.reduce((acc, item) => acc + item.quantity, 0)})</span>
+            </button>
           </div>
 
           {/* Filter Bar */}
@@ -104,23 +135,20 @@ export default function Shop() {
           {/* Content Area */}
           <div className="flex gap-8 h-[calc(100vh-250px)] min-h-[600px]">
             
-            {/* Product Grid (Always visible on desktop split, toggled on mobile) */}
-            <div className={cn(
-              "flex-1 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-[hsl(var(--color-border))]",
-              viewMode === 'map' ? "hidden lg:block lg:w-1/2" : "w-full"
-            )}>
+            {/* Product Grid */}
+            <div className="w-full flex-1 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-[hsl(var(--color-border))]">
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 pb-20">
                 {filteredProducts.map(product => (
                   <ProductCard 
                     key={product.id} 
                     product={product} 
                     onAddToBox={addToBox}
+                    onAddDozen={addDozenToCart}
                     isInBox={boxItems.includes(product.id)}
                   />
                 ))}
               </div>
             </div>
-
 
           </div>
         </div>
@@ -131,6 +159,15 @@ export default function Shop() {
           products={products}
           onRemoveItem={removeFromBox}
           onClearBox={() => setBoxItems([])}
+          onCompleteBox={completeBox}
+        />
+        
+        {/* Cart Drawer */}
+        <CartDrawer 
+          isOpen={isCartOpen} 
+          onClose={() => setIsCartOpen(false)} 
+          cart={cart}
+          onRemoveItem={removeCartItem}
         />
         
       </main>

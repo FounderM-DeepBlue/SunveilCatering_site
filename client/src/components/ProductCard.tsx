@@ -6,19 +6,25 @@ import { cn } from "@/lib/utils";
 interface ProductCardProps {
   product: any;
   onAddToBox: (id: string) => void;
+  onAddDozen: (id: string) => void;
   isInBox?: boolean;
 }
 
-export function ProductCard({ product, onAddToBox, isInBox = false }: ProductCardProps) {
-  const [isAdded, setIsAdded] = useState(false);
+export function ProductCard({ product, onAddToBox, onAddDozen, isInBox = false }: ProductCardProps) {
+  const [isAddedToBox, setIsAddedToBox] = useState(false);
+  const [isAddedDozen, setIsAddedDozen] = useState(false);
 
-  const handleAdd = () => {
-    setIsAdded(true);
+  const handleAddToBox = () => {
+    setIsAddedToBox(true);
     onAddToBox(product.id);
-    
-    // Reset "Added" state after 2 seconds so user can add more
-    setTimeout(() => setIsAdded(false), 2000);
+    setTimeout(() => setIsAddedToBox(false), 1000);
   };
+
+  const handleAddDozen = () => {
+    setIsAddedDozen(true);
+    onAddDozen(product.id);
+    setTimeout(() => setIsAddedDozen(false), 1000);
+  }
 
   return (
     <motion.div 
@@ -73,40 +79,43 @@ export function ProductCard({ product, onAddToBox, isInBox = false }: ProductCar
           </div>
         </div>
         
-        <motion.button
-          onClick={handleAdd}
-          whileTap={{ scale: 0.95 }}
-          className={cn(
-            "w-full font-bold py-2.5 rounded-md transition-all flex items-center justify-center gap-2 relative overflow-hidden",
-            isAdded || isInBox
-              ? "bg-[hsl(var(--color-forest))] text-white border-transparent"
-              : "bg-white text-[hsl(var(--color-deep-forest))] border border-[hsl(var(--color-deep-forest))] hover:bg-[hsl(var(--color-deep-forest))] hover:text-white"
-          )}
-        >
-          <AnimatePresence mode="wait">
-            {isAdded || isInBox ? (
-              <motion.span
-                key="added"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -20, opacity: 0 }}
-                className="flex items-center gap-2"
-              >
-                <Check className="w-4 h-4" /> Added to Box
-              </motion.span>
-            ) : (
-              <motion.span
-                key="add"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -20, opacity: 0 }}
-                className="flex items-center gap-2"
-              >
-                <Plus className="w-4 h-4" /> Add to Box
-              </motion.span>
+        <div className="flex flex-col gap-2 mt-auto">
+          {/* Add to Mixed Box Button */}
+          <motion.button
+            onClick={handleAddToBox}
+            whileTap={{ scale: 0.95 }}
+            className={cn(
+              "w-full font-bold py-2 rounded-md transition-all flex items-center justify-center gap-2 text-sm",
+              isAddedToBox || isInBox
+                ? "bg-[hsl(var(--color-cream))] text-[hsl(var(--color-forest))] border border-[hsl(var(--color-forest))]"
+                : "bg-white text-[hsl(var(--color-deep-forest))] border border-[hsl(var(--color-deep-forest))] hover:bg-[hsl(var(--color-cream))]"
             )}
-          </AnimatePresence>
-        </motion.button>
+          >
+            {isAddedToBox ? (
+               <span className="flex items-center gap-2"><Check className="w-4 h-4" /> Added to Box</span>
+            ) : (
+               <span className="flex items-center gap-2"><Plus className="w-4 h-4" /> Add to Mixed Box</span>
+            )}
+          </motion.button>
+
+          {/* Add Full Dozen Button */}
+          <motion.button
+            onClick={handleAddDozen}
+            whileTap={{ scale: 0.95 }}
+            className={cn(
+              "w-full font-bold py-2 rounded-md transition-all flex items-center justify-center gap-2 text-sm",
+              isAddedDozen
+                ? "bg-[hsl(var(--color-forest))] text-white"
+                : "bg-[hsl(var(--color-deep-forest))] text-white hover:bg-[hsl(var(--color-forest))]"
+            )}
+          >
+            {isAddedDozen ? (
+               <span className="flex items-center gap-2"><Check className="w-4 h-4" /> Added Dozen</span>
+            ) : (
+               <span className="flex items-center gap-2">Add Dozen (${product.price})</span>
+            )}
+          </motion.button>
+        </div>
       </div>
     </motion.div>
   );
