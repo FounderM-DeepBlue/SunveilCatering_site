@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import { ArrowRight, MapPin } from "lucide-react";
 import heroBg from "@assets/generated_images/cinematic_somali_pastries_hero_background.png";
 
@@ -42,23 +43,27 @@ export function Hero() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-[hsl(var(--color-forest))] text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:bg-[hsl(var(--color-deep-forest))] transition-all flex items-center justify-center gap-2 group"
-            >
-              Order by the Dozen
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </motion.button>
+            <Link href="/shop">
+              <motion.a
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-[hsl(var(--color-forest))] text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:bg-[hsl(var(--color-deep-forest))] transition-all flex items-center justify-center gap-2 group cursor-pointer"
+              >
+                Order by the Dozen
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </motion.a>
+            </Link>
             
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-all flex items-center justify-center gap-2"
-            >
-              <MapPin className="w-5 h-5" />
-              Find Us Locally
-            </motion.button>
+            <Link href="/locations">
+              <motion.a
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <MapPin className="w-5 h-5" />
+                Find Us Locally
+              </motion.a>
+            </Link>
           </div>
           
           <div className="mt-12 flex items-center gap-6 text-sm font-medium opacity-80">
