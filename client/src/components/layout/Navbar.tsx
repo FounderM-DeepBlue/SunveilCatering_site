@@ -22,7 +22,6 @@ export function Navbar() {
     { name: "Home", href: "/" },
     { name: "Our Story", href: "/story" },
     { name: "Shop", href: "/shop" },
-    { name: "Menu", href: "/menu" },
     { name: "Find Us", href: "/locations" },
   ];
 

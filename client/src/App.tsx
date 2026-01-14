@@ -9,7 +9,6 @@ import OurStory from "@/pages/OurStory";
 import Catering from "@/pages/Catering";
 import Shop from "@/pages/Shop";
 import Locations from "@/pages/Locations";
-import Menu from "@/pages/Menu";
 
 function Router() {
   return (
@@ -17,7 +16,6 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/shop" component={Shop} />
       <Route path="/story" component={OurStory} />
-      <Route path="/menu" component={Menu} />
       <Route path="/locations" component={Locations} />
       <Route path="/catering" component={Catering} />
       <Route component={NotFound} />
