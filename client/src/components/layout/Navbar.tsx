@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Menu, X, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "@assets/2_1768354997788.png";
+import logo from "@assets/1_background_removed_1768426374235.png";
 import { useCart } from "@/lib/CartContext";
 
 export function Navbar() {
