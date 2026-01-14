@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MapPin, Clock, Phone, ExternalLink } from "lucide-react";
+import mapImage from "@assets/stock_images/map_of_atlanta_stree_152a1eee.jpg";
 
 const locations = [
   {
@@ -46,15 +47,17 @@ export default function Locations() {
          </div>
 
          {/* Map Placeholder */}
-         <div className="w-full h-[400px] bg-[hsl(var(--color-muted))] mb-16 relative">
-            <div className="absolute inset-0 flex items-center justify-center text-[hsl(var(--color-moss))]/40 font-bold text-xl">
-               Interactive Map Loading...
-            </div>
+         <div className="w-full h-[400px] bg-[hsl(var(--color-muted))] mb-16 relative overflow-hidden">
+            <img 
+               src={mapImage} 
+               alt="Locations Map" 
+               className="w-full h-full object-cover opacity-80 grayscale hover:grayscale-0 transition-all duration-500"
+            />
             {/* Mock pins */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-12 -translate-y-8 text-[hsl(var(--color-forest))]">
+            <div className="absolute top-1/2 left-1/2 -translate-x-12 -translate-y-8 text-[hsl(var(--color-forest))] drop-shadow-lg">
                <MapPin className="w-10 h-10 fill-[hsl(var(--color-forest))] text-white" />
             </div>
-            <div className="absolute top-1/3 left-1/3 text-[hsl(var(--color-forest))]">
+            <div className="absolute top-1/3 left-1/3 text-[hsl(var(--color-forest))] drop-shadow-lg">
                <MapPin className="w-10 h-10 fill-[hsl(var(--color-forest))] text-white" />
             </div>
          </div>
