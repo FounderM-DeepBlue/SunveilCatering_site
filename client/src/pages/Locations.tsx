@@ -1,7 +1,10 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MapPin, Clock, Phone, ExternalLink } from "lucide-react";
-import mapImage from "@assets/stock_images/map_of_atlanta_stree_152a1eee.jpg";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import { renderToStaticMarkup } from "react-dom/server";
 
 const locations = [
   {
@@ -11,7 +14,8 @@ const locations = [
     type: "Coffee Shop",
     hours: "Mon-Sat 7am-4pm",
     phone: "(555) 123-4567",
-    products: ["Sabaayad", "Buskud", "Muffins"]
+    products: ["Sabaayad", "Buskud", "Muffins"],
+    coords: [33.7077, -84.3640] as [number, number]
   },
   {
     id: 2,
@@ -20,7 +24,8 @@ const locations = [
     type: "Market",
     hours: "Saturdays 8am-12pm",
     phone: "",
-    products: ["Full Menu"]
+    products: ["Full Menu"],
+    coords: [33.7487, -84.3129] as [number, number]
   },
   {
     id: 3,
@@ -29,9 +34,29 @@ const locations = [
     type: "Grocery",
     hours: "Daily 8am-9pm",
     phone: "(555) 987-6543",
-    products: ["Bread Loaves", "Cookies"]
+    products: ["Bread Loaves", "Cookies"],
+    coords: [33.7466, -84.3725] as [number, number]
   }
 ];
+
+// Create a custom icon using the Lucide MapPin
+const createCustomIcon = () => {
+  const iconHtml = renderToStaticMarkup(
+    <div className="text-[hsl(var(--color-forest))] drop-shadow-lg">
+      <MapPin className="w-10 h-10 fill-[hsl(var(--color-forest))] text-white" />
+    </div>
+  );
+  
+  return L.divIcon({
+    html: iconHtml,
+    className: "custom-marker-icon",
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+    popupAnchor: [0, -40]
+  });
+};
+
+const customIcon = createCustomIcon();
 
 export default function Locations() {
   return (
@@ -46,20 +71,35 @@ export default function Locations() {
             </p>
          </div>
 
-         {/* Map Placeholder */}
-         <div className="w-full h-[400px] bg-[hsl(var(--color-muted))] mb-16 relative overflow-hidden">
-            <img 
-               src={mapImage} 
-               alt="Locations Map" 
-               className="w-full h-full object-cover opacity-80 grayscale hover:grayscale-0 transition-all duration-500"
-            />
-            {/* Mock pins */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-12 -translate-y-8 text-[hsl(var(--color-forest))] drop-shadow-lg">
-               <MapPin className="w-10 h-10 fill-[hsl(var(--color-forest))] text-white" />
-            </div>
-            <div className="absolute top-1/3 left-1/3 text-[hsl(var(--color-forest))] drop-shadow-lg">
-               <MapPin className="w-10 h-10 fill-[hsl(var(--color-forest))] text-white" />
-            </div>
+         {/* Interactive Map */}
+         <div className="w-full h-[400px] mb-16 relative z-0">
+           <MapContainer 
+             center={[33.735, -84.35]} 
+             zoom={12} 
+             scrollWheelZoom={false}
+             className="w-full h-full rounded-none md:rounded-xl shadow-inner grayscale-[30%]"
+           >
+             <TileLayer
+               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+               url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+             />
+             {locations.map((loc) => (
+               <Marker 
+                 key={loc.id} 
+                 position={loc.coords}
+                 icon={customIcon}
+               >
+                 <Popup className="font-sans">
+                   <div className="p-2 min-w-[200px]">
+                     <span className="text-xs font-bold text-[hsl(var(--color-amber))] uppercase">{loc.type}</span>
+                     <h3 className="font-serif font-bold text-lg text-[hsl(var(--color-deep-forest))] mb-1">{loc.name}</h3>
+                     <p className="text-sm text-gray-600 mb-2">{loc.address}</p>
+                     <p className="text-xs font-medium">Open: {loc.hours}</p>
+                   </div>
+                 </Popup>
+               </Marker>
+             ))}
+           </MapContainer>
          </div>
 
          <div className="container mx-auto px-4 md:px-6">
