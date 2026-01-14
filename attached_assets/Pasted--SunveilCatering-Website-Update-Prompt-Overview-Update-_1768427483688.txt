@@ -1,0 +1,605 @@
+# SunveilCatering Website Update Prompt
+
+## Overview
+
+Update the existing SunveilCatering website with the finalized product catalog. Replace all existing products with the 8 official menu items below. Generate hyper-realistic product imagery for each item, update the Shop page, Catering/Wholesale page, and Homepage featured products section.
+
+---
+
+## Official Product Catalog (8 Items Only)
+
+### Danish Collection (Sold by the Dozen)
+
+```
+1. Apple Cheese Danish
+   - Description: Flaky pastry layered with creamy cheese filling and cinnamon-spiced apple compote
+   - Price: $36/dozen
+   - Category: Danish
+   - Tags: Vegetarian
+
+2. Classic Cheese Danish
+   - Description: Traditional Danish pastry with rich, sweet cream cheese center and light glaze
+   - Price: $32/dozen
+   - Category: Danish
+   - Tags: Vegetarian
+
+3. Strawberry Cheese Danish
+   - Description: Buttery Danish swirled with cream cheese and topped with fresh strawberry preserves
+   - Price: $36/dozen
+   - Category: Danish
+   - Tags: Vegetarian
+```
+
+### Signature Rolls (Sold by the Dozen)
+
+```
+4. Peach Cobbler Cinnamon Rolls
+   - Description: Soft, pillowy cinnamon rolls loaded with Georgia peach filling and vanilla bean glaze
+   - Price: $42/dozen
+   - Category: Rolls
+   - Tags: Vegetarian, Signature Item
+   - Featured: YES (Homepage)
+```
+
+### Artisan Breads (Sold by the Loaf)
+
+```
+5. Zucchini Bread
+   - Description: Moist, tender loaf with fresh-grated zucchini, warm spices, and a hint of vanilla
+   - Price: $12/loaf
+   - Unit: Single loaf (NOT dozen)
+   - Category: Breads
+   - Tags: Vegetarian, Nut-Free option available
+   - Featured: YES (Homepage)
+
+6. Lemon Poppy Seed Bread
+   - Description: Bright, citrus-forward loaf studded with poppy seeds and finished with lemon glaze
+   - Price: $12/loaf
+   - Unit: Single loaf (NOT dozen)
+   - Category: Breads
+   - Tags: Vegetarian
+```
+
+### Muffins & Cupcakes (Sold by the Dozen)
+
+```
+7. Blueberry Lavender Muffin
+   - Description: Tender muffin bursting with fresh blueberries and subtle culinary lavender, topped with sugar crystals
+   - Price: $36/dozen
+   - Category: Muffins
+   - Tags: Vegetarian, Signature Item
+   - Featured: YES (Homepage)
+
+8. Apple Upside Down Cupcakes
+   - Description: Caramelized apple topping over spiced cupcake with brown butter frosting
+   - Price: $42/dozen
+   - Category: Cupcakes
+   - Tags: Vegetarian
+```
+
+---
+
+## Product Data Structure
+
+```typescript
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  unitType: 'dozen' | 'loaf';
+  unitLabel: string;           // "per dozen" or "per loaf"
+  category: 'danish' | 'rolls' | 'breads' | 'muffins' | 'cupcakes';
+  tags: string[];
+  isFeatured: boolean;
+  images: {
+    hero: string;              // Main product shot
+    detail: string;            // Close-up texture shot
+  };
+  cateringMinimum: number;     // Minimum order for catering
+  cateringUnit: string;        // "dozen" or "loaves"
+}
+
+// Complete product data:
+const products: Product[] = [
+  {
+    id: "apple-cheese-danish",
+    name: "Apple Cheese Danish",
+    description: "Flaky pastry layered with creamy cheese filling and cinnamon-spiced apple compote",
+    price: 36,
+    unitType: "dozen",
+    unitLabel: "per dozen",
+    category: "danish",
+    tags: ["Vegetarian"],
+    isFeatured: false,
+    cateringMinimum: 2,
+    cateringUnit: "dozen"
+  },
+  {
+    id: "classic-cheese-danish",
+    name: "Classic Cheese Danish",
+    description: "Traditional Danish pastry with rich, sweet cream cheese center and light glaze",
+    price: 32,
+    unitType: "dozen",
+    unitLabel: "per dozen",
+    category: "danish",
+    tags: ["Vegetarian"],
+    isFeatured: false,
+    cateringMinimum: 2,
+    cateringUnit: "dozen"
+  },
+  {
+    id: "strawberry-cheese-danish",
+    name: "Strawberry Cheese Danish",
+    description: "Buttery Danish swirled with cream cheese and topped with fresh strawberry preserves",
+    price: 36,
+    unitType: "dozen",
+    unitLabel: "per dozen",
+    category: "danish",
+    tags: ["Vegetarian"],
+    isFeatured: false,
+    cateringMinimum: 2,
+    cateringUnit: "dozen"
+  },
+  {
+    id: "peach-cobbler-cinnamon-rolls",
+    name: "Peach Cobbler Cinnamon Rolls",
+    description: "Soft, pillowy cinnamon rolls loaded with Georgia peach filling and vanilla bean glaze",
+    price: 42,
+    unitType: "dozen",
+    unitLabel: "per dozen",
+    category: "rolls",
+    tags: ["Vegetarian", "Signature"],
+    isFeatured: true,
+    cateringMinimum: 2,
+    cateringUnit: "dozen"
+  },
+  {
+    id: "zucchini-bread",
+    name: "Zucchini Bread",
+    description: "Moist, tender loaf with fresh-grated zucchini, warm spices, and a hint of vanilla",
+    price: 12,
+    unitType: "loaf",
+    unitLabel: "per loaf",
+    category: "breads",
+    tags: ["Vegetarian", "Nut-Free Available"],
+    isFeatured: true,
+    cateringMinimum: 3,
+    cateringUnit: "loaves"
+  },
+  {
+    id: "lemon-poppy-seed-bread",
+    name: "Lemon Poppy Seed Bread",
+    description: "Bright, citrus-forward loaf studded with poppy seeds and finished with lemon glaze",
+    price: 12,
+    unitType: "loaf",
+    unitLabel: "per loaf",
+    category: "breads",
+    tags: ["Vegetarian"],
+    isFeatured: false,
+    cateringMinimum: 3,
+    cateringUnit: "loaves"
+  },
+  {
+    id: "blueberry-lavender-muffin",
+    name: "Blueberry Lavender Muffin",
+    description: "Tender muffin bursting with fresh blueberries and subtle culinary lavender, topped with sugar crystals",
+    price: 36,
+    unitType: "dozen",
+    unitLabel: "per dozen",
+    category: "muffins",
+    tags: ["Vegetarian", "Signature"],
+    isFeatured: true,
+    cateringMinimum: 2,
+    cateringUnit: "dozen"
+  },
+  {
+    id: "apple-upside-down-cupcakes",
+    name: "Apple Upside Down Cupcakes",
+    description: "Caramelized apple topping over spiced cupcake with brown butter frosting",
+    price: 42,
+    unitType: "dozen",
+    unitLabel: "per dozen",
+    category: "cupcakes",
+    tags: ["Vegetarian"],
+    isFeatured: false,
+    cateringMinimum: 2,
+    cateringUnit: "dozen"
+  }
+];
+```
+
+---
+
+## Hyper-Realistic Product Image Generation
+
+Generate professional food photography for each product. Follow these specifications:
+
+### Global Style Guidelines
+```
+Lighting: Warm, natural side lighting (golden hour aesthetic)
+Background: Rustic wood surface or marble with linen napkin accents
+Depth of field: Shallow—product sharp, background softly blurred
+Color grading: Warm tones matching Sunveil brand (forest green and amber accents in props)
+Composition: Hero shot slightly angled, detail shot extreme close-up on texture
+Props: Minimal—perhaps a vintage knife, scattered ingredient, or Sunveil branded napkin
+```
+
+### Individual Product Shots
+
+```
+1. Apple Cheese Danish
+   Hero: Single danish on parchment, apple filling glistening, visible flaky layers
+   Detail: Close-up of cream cheese and apple compote swirl, caramelized edges
+
+2. Classic Cheese Danish
+   Hero: Danish with one corner pulled away showing cheese center, light glaze dripping
+   Detail: Extreme close-up of flaky pastry layers and glossy cheese filling
+
+3. Strawberry Cheese Danish
+   Hero: Danish with vibrant red strawberry topping, fresh strawberry slice as prop
+   Detail: Close-up showing cream cheese beneath strawberry preserves
+
+4. Peach Cobbler Cinnamon Rolls (SIGNATURE - extra attention)
+   Hero: Pan of rolls with one pulled away, peach filling visible, glaze pooling
+   Detail: Single roll cross-section showing cinnamon swirl and peach chunks
+   Bonus: Overhead shot of full pan with Georgia peach halves as props
+
+5. Zucchini Bread (FEATURED)
+   Hero: Full loaf with 2-3 slices cut, showing moist interior with zucchini shreds
+   Detail: Close-up of slice texture, visible zucchini throughout
+
+6. Lemon Poppy Seed Bread
+   Hero: Glazed loaf with slices, lemon zest and poppy seeds visible on top
+   Detail: Close-up of glaze drip and poppy seed distribution in crumb
+
+7. Blueberry Lavender Muffin (SIGNATURE - extra attention)
+   Hero: Single muffin with domed top, sugar crystals catching light, blueberries bursting
+   Detail: Muffin torn in half showing blueberry-studded interior
+   Bonus: Sprig of culinary lavender as prop beside muffin
+
+8. Apple Upside Down Cupcakes
+   Hero: Single cupcake showing caramelized apple top with frosting swirl
+   Detail: Cross-section showing apple layer over spiced cake
+```
+
+---
+
+## Shop Page Updates
+
+### Remove All Existing Products
+Delete/replace any current products (Sabaayad, Buskud, etc.) with the 8 official items only.
+
+### Category Structure
+```
+Categories (for filtering):
+- All Products (default)
+- Danish (3 items)
+- Rolls (1 item)
+- Breads (2 items)
+- Muffins & Cupcakes (2 items)
+```
+
+### Product Card Display Logic
+
+```typescript
+// Handle different unit types in product cards
+
+const ProductCard = ({ product }) => {
+  return (
+    <div className="product-card">
+      <img src={product.images.hero} alt={product.name} />
+      <h3>{product.name}</h3>
+      <p>{product.description}</p>
+      
+      {/* Dynamic pricing display */}
+      <div className="price">
+        ${product.price}
+        <span className="unit">{product.unitLabel}</span>
+      </div>
+      
+      {/* Different CTA based on unit type */}
+      {product.unitType === 'dozen' ? (
+        <button>Add to Dozen Box</button>
+      ) : (
+        <button>Add to Order</button>
+      )}
+      
+      {/* Signature badge for featured items */}
+      {product.tags.includes('Signature') && (
+        <span className="badge signature">Signature Item</span>
+      )}
+    </div>
+  );
+};
+```
+
+### Cart/Box Logic Update
+
+```typescript
+// Cart must handle both dozen items and loaf items
+
+interface CartItem {
+  productId: string;
+  productName: string;
+  unitType: 'dozen' | 'loaf';
+  quantity: number;          // Number of dozens OR number of loaves
+  unitPrice: number;
+  lineTotal: number;
+}
+
+// Display logic:
+// - Danish/Rolls/Muffins/Cupcakes: "2 dozen × $36 = $72"
+// - Breads: "3 loaves × $12 = $36"
+
+// The "Dozen Box" concept applies to dozen items
+// Loaves are added separately to cart
+```
+
+---
+
+## Homepage Updates
+
+### "Our Signature Pastries" Section
+
+Display exactly 3 featured products in this order:
+
+```
+1. Peach Cobbler Cinnamon Rolls (left)
+2. Blueberry Lavender Muffin (center)  
+3. Zucchini Bread (right)
+```
+
+### Section Layout
+
+```
+Section Header: "Our Signature Pastries"
+Subheader: "Handcrafted daily with love and tradition"
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    Our Signature Pastries                        │
+│           Handcrafted daily with love and tradition              │
+├───────────────────┬───────────────────┬─────────────────────────┤
+│                   │                   │                         │
+│  [Peach Cobbler   │  [Blueberry       │  [Zucchini Bread        │
+│   Cinnamon Rolls] │   Lavender Muffin]│   Image]                │
+│                   │                   │                         │
+│  Peach Cobbler    │  Blueberry        │  Zucchini Bread         │
+│  Cinnamon Rolls   │  Lavender Muffin  │                         │
+│                   │                   │                         │
+│  $42/dozen        │  $36/dozen        │  $12/loaf               │
+│                   │                   │                         │
+│  [Order Now →]    │  [Order Now →]    │  [Order Now →]          │
+│                   │                   │                         │
+└───────────────────┴───────────────────┴─────────────────────────┘
+
+                        [View Full Menu →]
+```
+
+### Featured Product Card Styling
+
+```typescript
+// Enhanced styling for homepage featured items
+const FeaturedProductCard = ({ product }) => {
+  return (
+    <div className="featured-card">
+      {/* Signature badge */}
+      <div className="signature-badge">
+        ★ Signature
+      </div>
+      
+      {/* Large hero image with hover effect */}
+      <div className="image-container">
+        <img src={product.images.hero} alt={product.name} />
+      </div>
+      
+      {/* Product info */}
+      <h3>{product.name}</h3>
+      <p className="description">{product.description}</p>
+      
+      {/* Price with unit */}
+      <div className="price">
+        ${product.price}<span>/{product.unitType === 'dozen' ? 'dozen' : 'loaf'}</span>
+      </div>
+      
+      {/* CTA */}
+      <button className="cta-primary">
+        Order Now →
+      </button>
+    </div>
+  );
+};
+```
+
+---
+
+## Catering/Wholesale Page Updates
+
+### Update Product Selection Grid
+
+Show all 8 products with appropriate minimum order quantities:
+
+```
+Catering Minimums:
+─────────────────────────────────────────
+Danish Items (Apple, Classic, Strawberry)
+  Minimum: 2 dozen per variety
+  Increment: 1 dozen
+
+Peach Cobbler Cinnamon Rolls
+  Minimum: 2 dozen
+  Increment: 1 dozen
+
+Zucchini Bread
+  Minimum: 3 loaves
+  Increment: 1 loaf
+
+Lemon Poppy Seed Bread
+  Minimum: 3 loaves
+  Increment: 1 loaf
+
+Blueberry Lavender Muffin
+  Minimum: 2 dozen
+  Increment: 1 dozen
+
+Apple Upside Down Cupcakes
+  Minimum: 2 dozen
+  Increment: 1 dozen
+```
+
+### Catering Product Card
+
+```typescript
+const CateringProductCard = ({ product }) => {
+  const [quantity, setQuantity] = useState(product.cateringMinimum);
+  
+  return (
+    <div className="catering-product-card">
+      <img src={product.images.hero} alt={product.name} />
+      <h4>{product.name}</h4>
+      <p className="description">{product.description}</p>
+      
+      {/* Unit-aware pricing */}
+      <div className="pricing">
+        ${product.price} {product.unitLabel}
+      </div>
+      
+      {/* Minimum order notice */}
+      <div className="minimum-notice">
+        Minimum: {product.cateringMinimum} {product.cateringUnit}
+      </div>
+      
+      {/* Quantity selector */}
+      <div className="quantity-selector">
+        <button 
+          onClick={() => setQuantity(Math.max(product.cateringMinimum, quantity - 1))}
+          disabled={quantity <= product.cateringMinimum}
+        >
+          −
+        </button>
+        <span>{quantity} {product.cateringUnit}</span>
+        <button onClick={() => setQuantity(quantity + 1)}>
+          +
+        </button>
+      </div>
+      
+      {/* Line total */}
+      <div className="line-total">
+        Subtotal: ${quantity * product.price}
+      </div>
+      
+      <button className="add-to-inquiry">
+        Add to Inquiry
+      </button>
+    </div>
+  );
+};
+```
+
+### Catering Inquiry Summary
+
+```
+Your Catering Inquiry
+───────────────────────────────────────
+[img] Peach Cobbler Cinnamon Rolls
+      4 dozen × $42 = $168
+
+[img] Blueberry Lavender Muffin
+      3 dozen × $36 = $108
+
+[img] Zucchini Bread
+      6 loaves × $12 = $72
+───────────────────────────────────────
+Estimated Total: $348
+(Final pricing confirmed upon inquiry review)
+
+[Continue to Details →]
+```
+
+---
+
+## Database Update
+
+```sql
+-- Clear existing products and insert new catalog
+
+DELETE FROM products;
+
+INSERT INTO products (id, sku, name, description, price, unit_type, category, tags, is_featured, catering_minimum, catering_unit) VALUES
+('apple-cheese-danish', 'DAN-001', 'Apple Cheese Danish', 'Flaky pastry layered with creamy cheese filling and cinnamon-spiced apple compote', 36.00, 'dozen', 'danish', '["Vegetarian"]', 0, 2, 'dozen'),
+('classic-cheese-danish', 'DAN-002', 'Classic Cheese Danish', 'Traditional Danish pastry with rich, sweet cream cheese center and light glaze', 32.00, 'dozen', 'danish', '["Vegetarian"]', 0, 2, 'dozen'),
+('strawberry-cheese-danish', 'DAN-003', 'Strawberry Cheese Danish', 'Buttery Danish swirled with cream cheese and topped with fresh strawberry preserves', 36.00, 'dozen', 'danish', '["Vegetarian"]', 0, 2, 'dozen'),
+('peach-cobbler-cinnamon-rolls', 'ROL-001', 'Peach Cobbler Cinnamon Rolls', 'Soft, pillowy cinnamon rolls loaded with Georgia peach filling and vanilla bean glaze', 42.00, 'dozen', 'rolls', '["Vegetarian", "Signature"]', 1, 2, 'dozen'),
+('zucchini-bread', 'BRD-001', 'Zucchini Bread', 'Moist, tender loaf with fresh-grated zucchini, warm spices, and a hint of vanilla', 12.00, 'loaf', 'breads', '["Vegetarian", "Nut-Free Available"]', 1, 3, 'loaves'),
+('lemon-poppy-seed-bread', 'BRD-002', 'Lemon Poppy Seed Bread', 'Bright, citrus-forward loaf studded with poppy seeds and finished with lemon glaze', 12.00, 'loaf', 'breads', '["Vegetarian"]', 0, 3, 'loaves'),
+('blueberry-lavender-muffin', 'MUF-001', 'Blueberry Lavender Muffin', 'Tender muffin bursting with fresh blueberries and subtle culinary lavender, topped with sugar crystals', 36.00, 'dozen', 'muffins', '["Vegetarian", "Signature"]', 1, 2, 'dozen'),
+('apple-upside-down-cupcakes', 'CUP-001', 'Apple Upside Down Cupcakes', 'Caramelized apple topping over spiced cupcake with brown butter frosting', 42.00, 'dozen', 'cupcakes', '["Vegetarian"]', 0, 2, 'dozen');
+```
+
+---
+
+## Implementation Checklist
+
+### Phase 1: Product Images
+- [ ] Generate hero image for Apple Cheese Danish
+- [ ] Generate hero image for Classic Cheese Danish
+- [ ] Generate hero image for Strawberry Cheese Danish
+- [ ] Generate hero + bonus images for Peach Cobbler Cinnamon Rolls (Signature)
+- [ ] Generate hero image for Zucchini Bread (Featured)
+- [ ] Generate hero image for Lemon Poppy Seed Bread
+- [ ] Generate hero + bonus images for Blueberry Lavender Muffin (Signature)
+- [ ] Generate hero image for Apple Upside Down Cupcakes
+- [ ] Generate detail/texture shots for all 8 products
+- [ ] Optimize all images (WebP, responsive sizes)
+- [ ] Upload to storage/CDN
+
+### Phase 2: Shop Page
+- [ ] Remove all existing/placeholder products
+- [ ] Add 8 official products with new images
+- [ ] Implement category filtering (Danish, Rolls, Breads, Muffins & Cupcakes)
+- [ ] Handle dual unit types (dozen vs loaf) in product cards
+- [ ] Update cart logic for mixed unit types
+- [ ] Add Signature badges to featured items
+- [ ] Test add-to-cart animations with new products
+
+### Phase 3: Homepage
+- [ ] Update "Our Signature Pastries" section
+- [ ] Display: Peach Cobbler Cinnamon Rolls, Blueberry Lavender Muffin, Zucchini Bread
+- [ ] Ensure proper ordering (left to right as specified)
+- [ ] Update any hero section product imagery
+- [ ] Remove references to old products
+
+### Phase 4: Catering Page
+- [ ] Update product selection grid with 8 items only
+- [ ] Set correct minimums (2 dozen or 3 loaves)
+- [ ] Handle mixed units in inquiry summary
+- [ ] Update inquiry form validation
+- [ ] Test full inquiry submission flow
+
+### Phase 5: Cleanup
+- [ ] Remove any orphaned product images
+- [ ] Update seed data/database
+- [ ] Clear any cached old product data
+- [ ] Test all pages end-to-end
+
+---
+
+## Summary
+
+**Products: 8 items total**
+- 3 Danish (dozen)
+- 1 Rolls (dozen)
+- 2 Breads (loaf)
+- 1 Muffins (dozen)
+- 1 Cupcakes (dozen)
+
+**Homepage Featured: 3 items**
+1. Peach Cobbler Cinnamon Rolls
+2. Blueberry Lavender Muffin
+3. Zucchini Bread
+
+**Key Implementation Notes:**
+- Breads are sold by the LOAF, not dozen
+- All other items sold by the DOZEN
+- Cart/checkout must handle mixed unit types
+- Catering minimums vary by product type

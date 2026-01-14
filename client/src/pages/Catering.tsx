@@ -159,7 +159,9 @@ export default function Catering() {
                             <div className="flex-1">
                               <p className="font-bold text-sm text-[hsl(var(--color-deep-forest))]">{product.name}</p>
                               <p className="text-xs text-[hsl(var(--color-moss))]">
-                                {inquiryType === 'catering' ? 'Min: 2dz' : 'Case of 6 units'}
+                                {inquiryType === 'catering' 
+                                  ? `Min: ${product.cateringMinimum} ${product.cateringUnit}` 
+                                  : 'Case of 6 units'}
                               </p>
                             </div>
                             <div className="font-mono font-bold text-[hsl(var(--color-forest))]">
@@ -205,7 +207,7 @@ function ProductSelectionStep({ products, cart, addToCart, updateQuantity, inqui
         <h2 className="text-3xl font-serif font-bold text-[hsl(var(--color-deep-forest))] mb-2">Build Your Selection</h2>
         <p className="text-[hsl(var(--color-moss))]/70">
           Select the items you're interested in. 
-          {inquiryType === 'catering' ? ' Quantities are in dozens.' : ' Quantities are in wholesale cases.'}
+          {inquiryType === 'catering' ? ' Min quantities apply.' : ' Quantities are in wholesale cases.'}
         </p>
       </div>
 

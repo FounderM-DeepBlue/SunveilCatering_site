@@ -3,9 +3,9 @@ import { products } from "./data";
 
 export interface CartItem {
   id: string;
-  type: 'box' | 'dozen';
+  type: 'box' | 'dozen' | 'loaf';
   items?: string[]; // For box: list of product IDs
-  productId?: string; // For dozen: single product ID
+  productId?: string; // For dozen/loaf: single product ID
   quantity: number;
 }
 

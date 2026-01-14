@@ -19,7 +19,9 @@ export const products = [
     image: zucchiniImg, 
     desc: "Moist loaf with visible zucchini shreds, spiced with cinnamon and nutmeg.",
     tags: ["Vegetarian", "Loaf Only"],
-    unit: "loaf"
+    unit: "loaf",
+    cateringMinimum: 3,
+    cateringUnit: "loaves"
   },
   { 
     id: "prod_lemon", 
@@ -30,7 +32,9 @@ export const products = [
     image: lemonPoppyImg, 
     desc: "Bright, glazed top with poppy seeds throughout. A zesty favorite.",
     tags: ["Vegetarian", "Loaf Only"],
-    unit: "loaf"
+    unit: "loaf",
+    cateringMinimum: 3,
+    cateringUnit: "loaves"
   },
 
   // Muffins & Cupcakes
@@ -43,7 +47,9 @@ export const products = [
     image: blueberryMuffinImg, 
     desc: "Bursting with fresh blueberries and infused with delicate lavender.",
     tags: ["Vegetarian"],
-    unit: "dozen"
+    unit: "dozen",
+    cateringMinimum: 2,
+    cateringUnit: "dozen"
   },
   { 
     id: "prod_apple_cupcake", 
@@ -54,7 +60,9 @@ export const products = [
     image: appleCupcakeImg, 
     desc: "Caramelized apple topping on a moist spiced cake base.",
     tags: ["Vegetarian"],
-    unit: "dozen"
+    unit: "dozen",
+    cateringMinimum: 2,
+    cateringUnit: "dozen"
   },
 
   // Danish & Rolls
@@ -67,7 +75,9 @@ export const products = [
     image: appleCheeseDanishImg, 
     desc: "Flaky pastry filled with sweet cream cheese and spiced apples.",
     tags: ["Vegetarian"],
-    unit: "dozen"
+    unit: "dozen",
+    cateringMinimum: 2,
+    cateringUnit: "dozen"
   },
   { 
     id: "prod_classic_danish", 
@@ -78,7 +88,9 @@ export const products = [
     image: classicCheeseDanishImg, 
     desc: "Traditional flaky pastry with a rich, smooth cream cheese center.",
     tags: ["Vegetarian"],
-    unit: "dozen"
+    unit: "dozen",
+    cateringMinimum: 2,
+    cateringUnit: "dozen"
   },
   { 
     id: "prod_strawberry_danish", 
@@ -89,7 +101,9 @@ export const products = [
     image: strawberryCheeseDanishImg, 
     desc: "Our classic cheese danish topped with fresh strawberry glaze.",
     tags: ["Vegetarian"],
-    unit: "dozen"
+    unit: "dozen",
+    cateringMinimum: 2,
+    cateringUnit: "dozen"
   },
   { 
     id: "prod_peach_roll", 
@@ -100,7 +114,9 @@ export const products = [
     image: peachCobblerRollImg, 
     desc: "Soft cinnamon rolls topped with peaches and cobbler crumble.",
     tags: ["Vegetarian"],
-    unit: "dozen"
+    unit: "dozen",
+    cateringMinimum: 2,
+    cateringUnit: "dozen"
   }
 ];
 

@@ -104,7 +104,9 @@ export function CartDrawer() {
                               <img src={product?.image} className="w-16 h-16 rounded-md object-cover bg-[hsl(var(--color-muted))]" />
                               <div>
                                 <h3 className="font-bold text-[hsl(var(--color-deep-forest))]">{product?.name}</h3>
-                                <p className="text-xs text-[hsl(var(--color-moss))] mb-1">1 Dozen</p>
+                                <p className="text-xs text-[hsl(var(--color-moss))] mb-1">
+                                  {item.type === 'loaf' ? '1 Loaf' : '1 Dozen'}
+                                </p>
                                 <div className="font-bold text-[hsl(var(--color-forest))]">
                                   ${product?.price}.00
                                 </div>
