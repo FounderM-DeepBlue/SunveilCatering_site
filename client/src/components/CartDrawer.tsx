@@ -1,23 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Trash2 } from "lucide-react";
 import { products } from "@/lib/data";
+import { useCart } from "@/lib/CartContext";
 
-interface CartItem {
-  id: string;
-  type: 'box' | 'dozen';
-  items?: string[]; // For box: list of product IDs
-  productId?: string; // For dozen: single product ID
-  quantity: number;
-}
-
-interface CartDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
-  cart: CartItem[];
-  onRemoveItem: (id: string) => void;
-}
-
-export function CartDrawer({ isOpen, onClose, cart, onRemoveItem }: CartDrawerProps) {
+export function CartDrawer() {
+  const { cart, removeFromCart, isCartOpen, setIsCartOpen } = useCart();
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   
   // Calculate total price (Mock logic)
@@ -32,9 +19,11 @@ export function CartDrawer({ isOpen, onClose, cart, onRemoveItem }: CartDrawerPr
     return sum;
   }, 0);
 
+  const onClose = () => setIsCartOpen(false);
+
   return (
     <AnimatePresence>
-      {isOpen && (
+      {isCartOpen && (
         <>
           {/* Backdrop */}
           <motion.div
@@ -79,7 +68,7 @@ export function CartDrawer({ isOpen, onClose, cart, onRemoveItem }: CartDrawerPr
                 cart.map((item) => (
                   <div key={item.id} className="bg-white border border-[hsl(var(--color-border))] rounded-lg p-4 shadow-sm relative group">
                     <button 
-                      onClick={() => onRemoveItem(item.id)}
+                      onClick={() => removeFromCart(item.id)}
                       className="absolute top-2 right-2 p-1 text-[hsl(var(--color-muted-foreground))] hover:text-[hsl(var(--color-destructive))] opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <Trash2 className="w-4 h-4" />

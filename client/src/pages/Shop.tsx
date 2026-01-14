@@ -4,18 +4,9 @@ import { Footer } from "@/components/layout/Footer";
 import { Filter, Map as MapIcon, Grid, Search, ShoppingBag } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
 import { DozenBoxBuilder } from "@/components/DozenBoxBuilder";
-import { CartDrawer } from "@/components/CartDrawer";
 import { products, locations } from "@/lib/data";
 import { cn } from "@/lib/utils";
-
-// Types for Cart
-interface CartItem {
-  id: string;
-  type: 'box' | 'dozen';
-  items?: string[];
-  productId?: string;
-  quantity: number;
-}
+import { useCart, CartItem } from "@/lib/CartContext";
 
 export default function Shop() {
   const [viewMode, setViewMode] = useState<'grid' | 'map'>('grid');
@@ -23,9 +14,8 @@ export default function Shop() {
   const [boxItems, setBoxItems] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   
-  // Cart State
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  // Cart State from Context
+  const { cart, addToCart, setIsCartOpen } = useCart();
 
   // Categories derived from products
   const categories = ["All", ...Array.from(new Set(products.map(p => p.category)))];
@@ -58,9 +48,8 @@ export default function Shop() {
         items: [...boxItems],
         quantity: 1
       };
-      setCart([...cart, newBox]);
+      addToCart(newBox);
       setBoxItems([]);
-      setIsCartOpen(true);
     }
   };
 
@@ -72,12 +61,7 @@ export default function Shop() {
       productId: productId,
       quantity: 1
     };
-    setCart([...cart, newDozen]);
-    setIsCartOpen(true);
-  };
-
-  const removeCartItem = (id: string) => {
-    setCart(cart.filter(item => item.id !== id));
+    addToCart(newDozen);
   };
 
   return (
@@ -160,14 +144,6 @@ export default function Shop() {
           onRemoveItem={removeFromBox}
           onClearBox={() => setBoxItems([])}
           onCompleteBox={completeBox}
-        />
-        
-        {/* Cart Drawer */}
-        <CartDrawer 
-          isOpen={isCartOpen} 
-          onClose={() => setIsCartOpen(false)} 
-          cart={cart}
-          onRemoveItem={removeCartItem}
         />
         
       </main>

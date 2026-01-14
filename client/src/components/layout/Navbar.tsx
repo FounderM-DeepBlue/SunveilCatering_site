@@ -4,11 +4,13 @@ import { Menu, X, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "@assets/2_1768354997788.png";
+import { useCart } from "@/lib/CartContext";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [location] = useLocation();
+  const { totalItems, setIsCartOpen } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,11 +67,16 @@ export function Navbar() {
                 </a>
               </Link>
             ))}
-            <button className="relative p-2 text-[hsl(var(--color-deep-forest))] hover:text-[hsl(var(--color-amber))] transition-colors">
+            <button 
+              className="relative p-2 text-[hsl(var(--color-deep-forest))] hover:text-[hsl(var(--color-amber))] transition-colors"
+              onClick={() => setIsCartOpen(true)}
+            >
               <ShoppingBag className="w-5 h-5" />
-              <span className="absolute top-0 right-0 h-4 w-4 bg-[hsl(var(--color-rust))] text-white text-[10px] flex items-center justify-center rounded-full">
-                0
-              </span>
+              {totalItems > 0 && (
+                <span className="absolute top-0 right-0 h-4 w-4 bg-[hsl(var(--color-rust))] text-white text-[10px] flex items-center justify-center rounded-full">
+                  {totalItems}
+                </span>
+              )}
             </button>
             <button className="bg-[hsl(var(--color-forest))] text-[hsl(var(--color-forest-foreground))] px-5 py-2 rounded-full text-sm font-medium hover:bg-[hsl(var(--color-deep-forest))] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200">
               Order Now
