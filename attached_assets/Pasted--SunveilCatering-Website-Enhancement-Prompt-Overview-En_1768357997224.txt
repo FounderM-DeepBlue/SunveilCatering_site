@@ -1,0 +1,702 @@
+# SunveilCatering Website Enhancement Prompt
+
+## Overview
+
+Enhance the existing SunveilCatering website with three major feature sets: (1) a fully functional Catering/Wholesale inquiry system with cart builder, (2) complete interactive e-commerce functionality with hyper-realistic product imagery, and (3) a unified Menu + Locations page that shows product availability by partner location.
+
+---
+
+## Feature Set 1: Catering & Wholesale Page (`/catering`)
+
+### Purpose
+Allow businesses, event planners, and bulk buyers to build a custom catering/wholesale inquiry cart and submit it as a lead/request form. This is NOT a checkout—it's a lead generation tool that sends inquiries to the Sunveil team.
+
+### Page Structure
+
+**Hero Section**
+```
+Headline: "Catering & Wholesale Partnerships"
+Subheadline: "Bring Somali tradition to your events, cafés, and retail shelves"
+Background: Elegant spread of pastries at a catered event setting
+Two paths highlighted:
+  - "Planning an Event?" → Catering inquiry
+  - "Stock Your Shelves?" → Wholesale inquiry
+```
+
+**Inquiry Type Selector**
+```
+Toggle or tab interface:
+  [Catering] | [Wholesale]
+
+Catering: Events, weddings, corporate meetings, private parties
+Wholesale: Cafés, restaurants, grocery stores, food service
+```
+
+**Catering/Wholesale Cart Builder**
+
+Build an interactive "Interest Cart" where users select products and quantities they're interested in:
+
+```typescript
+interface CateringItem {
+  productId: string;
+  productName: string;
+  quantity: number;        // In dozens for catering, cases for wholesale
+  unitType: 'dozen' | 'case' | 'unit';
+  notes?: string;          // Special requests per item
+}
+
+interface CateringInquiry {
+  inquiryType: 'catering' | 'wholesale';
+  items: CateringItem[];
+  
+  // Contact Information
+  contactName: string;
+  businessName?: string;
+  email: string;
+  phone: string;
+  
+  // Event/Order Details (conditional fields)
+  // For Catering:
+  eventDate?: Date;
+  eventType?: string;      // Wedding, Corporate, Private Party, Other
+  guestCount?: number;
+  eventLocation?: string;
+  
+  // For Wholesale:
+  businessType?: string;   // Café, Restaurant, Grocery, Other
+  deliveryFrequency?: string; // One-time, Weekly, Bi-weekly, Monthly
+  estimatedVolume?: string;
+  
+  // Common
+  additionalNotes?: string;
+  howDidYouHear?: string;
+}
+```
+
+**Product Selection Grid**
+
+Display all menu items available for catering/wholesale with:
+```
+- Hyper-realistic product image
+- Somali name + English name
+- Brief description
+- Minimum order quantity (e.g., "Min: 2 dozen")
+- Quantity selector (dozen increments for catering, case for wholesale)
+- "Add to Inquiry" button with animation
+- Running total in persistent sidebar/bottom bar
+```
+
+**Inquiry Summary Sidebar (Desktop) / Bottom Sheet (Mobile)**
+```
+"Your Catering Inquiry"
+---------------------------
+[Product thumbnail] Sabaayad × 5 dozen
+[Product thumbnail] Buskud × 3 dozen
+[Product thumbnail] Zucchini Bread × 2 dozen
+---------------------------
+Total Items: 10 dozen
+
+[Continue to Details →]
+```
+
+**Multi-Step Form Flow**
+
+```
+Step 1: Build Your Selection
+  - Browse and add products to inquiry cart
+  - Set quantities and any item-specific notes
+  - "Continue to Details →"
+
+Step 2: Event/Business Details
+  - Catering path: Event date, type, guest count, location
+  - Wholesale path: Business type, delivery frequency, volume
+  - "Continue to Contact Info →"
+
+Step 3: Contact Information
+  - Name, business name, email, phone
+  - How did you hear about us?
+  - Additional notes/special requests
+  - Terms acknowledgment checkbox
+  - "Submit Inquiry →"
+
+Step 4: Confirmation
+  - Success message with inquiry reference number
+  - "We'll respond within 24-48 hours"
+  - Summary of submitted inquiry
+  - Option to download/print inquiry summary
+```
+
+**Backend Requirements**
+```typescript
+// API Endpoint
+POST /api/inquiries/catering
+
+// Request body: CateringInquiry object
+
+// Actions on submission:
+1. Store inquiry in database (inquiries table)
+2. Send confirmation email to customer
+3. Send notification email to Sunveil team with full details
+4. Optional: Send to CRM/Slack webhook for team notification
+
+// Response:
+{
+  success: true,
+  inquiryId: "CAT-2024-001234",
+  message: "Inquiry submitted successfully"
+}
+```
+
+**Email Templates Needed**
+```
+1. Customer confirmation email:
+   - Thank you message
+   - Inquiry reference number
+   - Summary of items requested
+   - Expected response timeframe
+   - Contact info for urgent inquiries
+
+2. Internal team notification:
+   - All inquiry details
+   - Customer contact info
+   - Formatted product list with quantities
+   - Quick reply button/link
+```
+
+---
+
+## Feature Set 2: Full E-Commerce Functionality & Product Imagery
+
+### Hyper-Realistic Product Image Generation
+
+Generate professional, appetizing product photography for every menu item. Each image should:
+
+```
+Style Guidelines:
+- Warm, natural lighting (golden hour feel)
+- Shallow depth of field (product in focus, soft background)
+- Rustic/artisan styling (wooden boards, linen napkins, Somali textile hints)
+- Steam/freshness cues where appropriate
+- Consistent color grading matching brand palette
+- Multiple angles per product (hero, detail, cross-section where applicable)
+
+Products Requiring Images:
+---------------------------
+
+BREADS & MUFFINS:
+1. Zucchini Bread - Moist loaf with visible zucchini shreds, sliced to show interior
+2. Banana Nut Bread - Golden brown with walnut pieces visible
+3. Cranberry Orange Bread - Vibrant orange zest, cranberry jewels throughout
+4. Lemon Poppy Seed Bread - Bright, glazed top with poppy seeds
+5. Blueberry Muffin - Bursting with berries, sugar-crusted top
+6. Morning Glory Muffin - Hearty, carrot and raisin visible
+
+DANISH & ROLLS:
+7. Cheese Danish - Flaky layers, cream cheese center glistening
+8. Cinnamon Roll - Spiral visible, cream cheese frosting dripping
+9. Butter Croissant - Golden, shattered flaky layers
+10. Chocolate Croissant - Dark chocolate peeking through layers
+
+SOMALI SPECIALTIES:
+11. Sabaayad - Traditional flatbread, slightly charred spots, folded/stacked
+12. Buskud - Traditional biscuits, arranged in traditional manner
+13. Malawah - Honeycomb texture, served with tea styling
+14. Cambuulo - Traditional presentation with butter/sugar
+
+FUSION ITEMS:
+15. Cardamom Rose Danish - Elegant, rose petals, cardamom pods as props
+16. Somali Spiced Banana Bread - Xawaash spices visible
+```
+
+### Add to Box Animation System
+
+Implement smooth, satisfying micro-interactions:
+
+```typescript
+// Animation Specifications
+
+1. "Add to Box" Button Animation:
+   - Button press: Scale down to 0.95, spring back
+   - Success state: Checkmark morphs from plus icon
+   - Color transition: Green pulse on success
+   - Duration: 300ms total
+
+2. Flying Product Animation:
+   - Product thumbnail "flies" from card to cart icon
+   - Bezier curve path (arc, not straight line)
+   - Scale down during flight (1 → 0.3)
+   - Slight rotation during flight
+   - Cart icon bounces on receive
+   - Duration: 500-600ms
+
+3. Cart Counter Animation:
+   - Number increment with spring physics
+   - Brief scale up (1.2) then settle
+   - Background pulse on the cart badge
+
+4. Dozen Box Progress Animation:
+   - Progress bar fills smoothly
+   - Milestone celebrations at 6/12 and 12/12
+   - Confetti or sparkle effect when box completed
+   - "Box Complete!" toast notification
+
+5. Remove Item Animation:
+   - Swipe to delete (mobile)
+   - Fade out + collapse height
+   - Cart counter decrements with same spring animation
+
+// Framer Motion Implementation Example:
+const flyToCart = {
+  initial: { 
+    scale: 1, 
+    x: 0, 
+    y: 0, 
+    opacity: 1 
+  },
+  animate: { 
+    scale: 0.3,
+    x: cartPosition.x - itemPosition.x,
+    y: cartPosition.y - itemPosition.y,
+    opacity: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.25, 0.1, 0.25, 1], // Custom bezier
+    }
+  }
+};
+
+const cartBounce = {
+  scale: [1, 1.3, 1],
+  transition: { duration: 0.3, times: [0, 0.5, 1] }
+};
+```
+
+### Product Card Component Enhancement
+
+```typescript
+interface ProductCardProps {
+  product: {
+    id: string;
+    somaliName: string;
+    englishName: string;
+    description: string;
+    pricePerDozen: number;
+    pricePerUnit: number;
+    images: {
+      hero: string;      // Main product shot
+      detail: string;    // Close-up texture
+      slice?: string;    // Cross-section if applicable
+    };
+    category: string;
+    tags: string[];      // Halal, Vegetarian, etc.
+    availableAt: string[]; // Location IDs
+  };
+  onAddToBox: (productId: string) => void;
+  currentBoxCount: number;
+}
+
+// Card Features:
+- Image hover: Subtle zoom (scale 1.05) + shadow lift
+- Quick view modal on image click (gallery of all angles)
+- Quantity selector appears after first add
+- "Added ✓" state persists while in box
+- Availability badge: "Available at 12 locations"
+- Dietary badges: Small icons for Halal, Vegetarian, etc.
+```
+
+---
+
+## Feature Set 3: Unified Menu + Locations Page (`/menu`)
+
+### Concept
+Merge the Menu and Find Us pages into a single, powerful discovery experience. Users can browse the full menu AND see exactly which partner locations carry each item.
+
+### Page Layout
+
+**Header/Filter Bar**
+```
+[Search products...]  [Category ▼]  [Dietary ▼]  [Location ▼]
+
+View toggle: [Grid] [Map]
+```
+
+**Split View Layout (Desktop)**
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        Filter Bar                                │
+├─────────────────────────────────┬───────────────────────────────┤
+│                                 │                               │
+│      Product Grid/List          │     Interactive Map           │
+│      (Scrollable)               │     (Sticky)                  │
+│                                 │                               │
+│   [Product Card]  [Product]     │     🔴 Partner Location       │
+│   [Product Card]  [Product]     │     🔴 Partner Location       │
+│   [Product Card]  [Product]     │        🔴                     │
+│                                 │     🔴    🔴                  │
+│                                 │                               │
+└─────────────────────────────────┴───────────────────────────────┘
+```
+
+**Mobile Layout**
+```
+- Tab toggle: [Products] | [Map]
+- Products tab: Scrollable product grid
+- Map tab: Full-screen map with bottom sheet for location details
+- Persistent filter button (opens modal)
+```
+
+### Product-Location Integration
+
+**On Product Cards:**
+```
+┌─────────────────────────────────┐
+│  [Product Image]                │
+│                                 │
+│  Sabaayad                       │
+│  Somali Flatbread               │
+│  $24/dozen                      │
+│                                 │
+│  📍 Available at 8 locations    │  ← Clickable
+│  [Add to Box]                   │
+└─────────────────────────────────┘
+
+Click "Available at X locations" → 
+  - Highlights those locations on map
+  - Opens drawer/modal listing specific shops:
+    
+    "Find Sabaayad at:"
+    ──────────────────
+    📍 Refuge Coffee (2.3 mi)
+       Clarkston, GA • Open until 6pm
+       [Get Directions]
+    
+    📍 Global Grind (4.1 mi)
+       Decatur, GA • Open until 8pm
+       [Get Directions]
+    
+    📍 Karibu Market (5.8 mi)
+       Stone Mountain, GA • Closes at 7pm
+       [Get Directions]
+```
+
+**On Map Location Pins:**
+```
+Click location pin → Info card appears:
+
+┌─────────────────────────────────┐
+│  Refuge Coffee Co.              │
+│  ⭐ Featured Partner            │
+│  📍 4170 E Ponce de Leon Ave    │
+│     Clarkston, GA 30021         │
+│  🕐 Open · Closes 6pm           │
+│  📞 (404) 555-0123              │
+│                                 │
+│  Products Available:            │
+│  ┌─────┐ ┌─────┐ ┌─────┐       │
+│  │ 🍞  │ │ 🥐  │ │ 🧁  │       │
+│  │Sabaa│ │Crois│ │Muffi│       │
+│  └─────┘ └─────┘ └─────┘       │
+│  +3 more                        │
+│                                 │
+│  [Get Directions] [Call]        │
+└─────────────────────────────────┘
+```
+
+### Filtering Logic
+
+```typescript
+interface MenuFilters {
+  search: string;           // Text search across product names
+  categories: string[];     // Breads, Danish, Somali, Fusion
+  dietary: string[];        // Halal, Vegetarian, Nut-Free
+  locationId?: string;      // Filter to specific location's inventory
+  availableNow?: boolean;   // Only show products at currently open locations
+}
+
+// Filter interactions:
+
+1. Select category "Somali Specialties":
+   → Grid shows only Somali items
+   → Map highlights only locations carrying Somali items
+
+2. Select specific location "Refuge Coffee":
+   → Grid shows only products available at Refuge
+   → Map centers on Refuge, dims other pins
+
+3. Click product "Sabaayad":
+   → Product detail expands
+   → Map highlights all locations carrying Sabaayad
+   → Other pins dim but remain visible
+
+4. Search "cinnamon":
+   → Grid filters to Cinnamon Roll
+   → Map highlights locations carrying it
+```
+
+### Location Data Structure
+
+```typescript
+interface PartnerLocation {
+  id: string;
+  name: string;
+  partnerType: 'cafe' | 'grocery' | 'restaurant' | 'market';
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+  };
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  phone: string;
+  hours: {
+    [day: string]: { open: string; close: string } | 'closed';
+  };
+  productsCarried: string[];  // Array of product IDs
+  isFeatured: boolean;
+  deliveryDays: string[];     // Days Sunveil delivers to this location
+  description?: string;
+  image?: string;
+}
+
+// Example:
+{
+  id: "loc_refuge_coffee",
+  name: "Refuge Coffee Co.",
+  partnerType: "cafe",
+  address: {
+    street: "4170 E Ponce de Leon Ave",
+    city: "Clarkston",
+    state: "GA",
+    zip: "30021"
+  },
+  coordinates: { lat: 33.8095, lng: -84.2428 },
+  phone: "(404) 555-0123",
+  hours: {
+    monday: { open: "07:00", close: "18:00" },
+    tuesday: { open: "07:00", close: "18:00" },
+    // ...
+    sunday: "closed"
+  },
+  productsCarried: ["sabaayad", "buskud", "croissant", "cinnamon_roll"],
+  isFeatured: true,
+  deliveryDays: ["monday", "wednesday", "friday"],
+  description: "Community-focused coffee shop supporting refugee employment"
+}
+```
+
+### Map Implementation
+
+```typescript
+// Google Maps Integration
+
+import { GoogleMap, MarkerClusterer, InfoWindow } from '@react-google-maps/api';
+
+// Features:
+1. Clustered markers (zoom out → clusters, zoom in → individual pins)
+2. Custom pin icons matching brand colors
+3. User geolocation with "Near Me" sorting
+4. Info windows with product thumbnails
+5. Directions integration (Google Maps deep link)
+6. "Open Now" visual indicator (green dot on open locations)
+
+// Custom Marker Styling:
+const markerIcon = {
+  path: google.maps.SymbolPath.CIRCLE,
+  fillColor: '#2d5f3b',  // Forest Green
+  fillOpacity: 1,
+  strokeColor: '#1a3529', // Deep Forest
+  strokeWeight: 2,
+  scale: 10,
+};
+
+const featuredMarkerIcon = {
+  ...markerIcon,
+  fillColor: '#ba8919',  // Amber for featured partners
+};
+```
+
+---
+
+## Database Schema Updates
+
+```sql
+-- Add to existing schema:
+
+-- Catering/Wholesale Inquiries
+CREATE TABLE inquiries (
+    id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    inquiry_number NVARCHAR(20) UNIQUE NOT NULL,  -- CAT-2024-001234
+    inquiry_type NVARCHAR(20) NOT NULL,  -- 'catering' or 'wholesale'
+    status NVARCHAR(20) DEFAULT 'new',   -- new, contacted, quoted, converted, closed
+    
+    -- Contact Info
+    contact_name NVARCHAR(255) NOT NULL,
+    business_name NVARCHAR(255),
+    email NVARCHAR(255) NOT NULL,
+    phone NVARCHAR(20) NOT NULL,
+    
+    -- Event Details (catering)
+    event_date DATE,
+    event_type NVARCHAR(100),
+    guest_count INT,
+    event_location NVARCHAR(500),
+    
+    -- Business Details (wholesale)
+    business_type NVARCHAR(100),
+    delivery_frequency NVARCHAR(50),
+    estimated_volume NVARCHAR(100),
+    
+    -- Common
+    items NVARCHAR(MAX) NOT NULL,  -- JSON array of {productId, quantity, notes}
+    additional_notes NVARCHAR(MAX),
+    how_did_you_hear NVARCHAR(255),
+    
+    created_at DATETIME2 DEFAULT GETUTCDATE(),
+    updated_at DATETIME2 DEFAULT GETUTCDATE(),
+    responded_at DATETIME2,
+    responded_by NVARCHAR(255)
+);
+
+-- Update products table for images
+ALTER TABLE products ADD 
+    image_hero NVARCHAR(500),
+    image_detail NVARCHAR(500),
+    image_slice NVARCHAR(500),
+    minimum_catering_quantity INT DEFAULT 2,  -- Minimum dozens for catering
+    wholesale_case_size INT DEFAULT 6;        -- Units per wholesale case
+
+-- Update partner_locations for enhanced data
+ALTER TABLE partner_locations ADD
+    partner_type NVARCHAR(50),
+    description NVARCHAR(500),
+    image_url NVARCHAR(500),
+    is_featured BIT DEFAULT 0,
+    delivery_days NVARCHAR(100),  -- JSON array: ["monday","wednesday","friday"]
+    hours NVARCHAR(500);          -- JSON object with daily hours
+
+-- Create index for location-product queries
+CREATE INDEX idx_location_products ON partner_locations(id) INCLUDE (products_available);
+```
+
+---
+
+## API Endpoints to Add
+
+```typescript
+// Catering/Wholesale Endpoints
+POST   /api/inquiries              // Submit new inquiry
+GET    /api/inquiries/:id          // Get inquiry status (for confirmation page)
+
+// Enhanced Product Endpoints  
+GET    /api/products/:id/locations // Get locations carrying specific product
+
+// Enhanced Location Endpoints
+GET    /api/locations/:id/products // Get products at specific location
+GET    /api/locations/search       // Search with filters (product, open now, etc.)
+
+// Webhook for notifications
+POST   /api/webhooks/inquiry-notify // Internal: trigger email notifications
+```
+
+---
+
+## Animation Library Requirements
+
+```typescript
+// Required packages:
+npm install framer-motion
+npm install @react-spring/web  // Alternative/supplement for physics-based
+npm install canvas-confetti    // For celebration moments
+
+// Animation constants (create /lib/animations.ts)
+export const animations = {
+  // Timing
+  fast: 0.15,
+  normal: 0.3,
+  slow: 0.5,
+  
+  // Easings
+  bounce: [0.68, -0.55, 0.265, 1.55],
+  smooth: [0.25, 0.1, 0.25, 1],
+  snappy: [0.25, 0.46, 0.45, 0.94],
+  
+  // Springs
+  gentle: { stiffness: 120, damping: 14 },
+  bouncy: { stiffness: 300, damping: 10 },
+  stiff: { stiffness: 400, damping: 30 },
+};
+```
+
+---
+
+## Deliverables Checklist
+
+### Catering/Wholesale Page
+- [ ] Hero section with dual-path CTAs
+- [ ] Inquiry type toggle (Catering/Wholesale)
+- [ ] Product selection grid with add-to-inquiry functionality
+- [ ] Quantity selectors with minimum order enforcement
+- [ ] Persistent inquiry summary sidebar/bottom sheet
+- [ ] Multi-step form (Selection → Details → Contact → Confirmation)
+- [ ] Form validation with inline errors
+- [ ] Submission API integration
+- [ ] Confirmation page with inquiry reference
+- [ ] Email notifications (customer + internal team)
+
+### Product Imagery
+- [ ] Generate hyper-realistic images for all 16+ products
+- [ ] Multiple angles per product (hero, detail, slice)
+- [ ] Consistent styling and lighting
+- [ ] Optimized for web (WebP format, responsive sizes)
+- [ ] Upload to Azure Blob Storage with CDN
+
+### E-Commerce Animations
+- [ ] Add to Box button micro-interaction
+- [ ] Flying product animation to cart
+- [ ] Cart counter bounce animation
+- [ ] Progress bar fill animation
+- [ ] Box completion celebration
+- [ ] Remove item animation
+- [ ] Page transition animations
+
+### Unified Menu + Locations
+- [ ] Split view layout (product grid + map)
+- [ ] Mobile tab navigation
+- [ ] Google Maps integration with clustering
+- [ ] Custom branded map pins
+- [ ] Product-to-location filtering
+- [ ] Location-to-product filtering
+- [ ] "Available at X locations" interaction
+- [ ] Location info cards with product thumbnails
+- [ ] Geolocation and distance sorting
+- [ ] "Open Now" indicator
+- [ ] Get Directions deep linking
+
+---
+
+## Priority Order for Development
+
+```
+Phase 1 (Immediate):
+1. Generate all product images
+2. Implement Add to Box animations
+3. Build Catering/Wholesale inquiry form
+
+Phase 2 (Next):
+4. Merge Menu + Locations page
+5. Google Maps integration
+6. Product-location cross-filtering
+
+Phase 3 (Polish):
+7. Email notification system
+8. Celebration animations
+9. Mobile optimization pass
+10. Performance optimization
+```
+
+---
+
+Use this prompt to guide development. Focus on the catering inquiry system first—it's a direct revenue driver—then enhance the visual experience with imagery and animations, and finally unify the discovery experience with the merged menu/locations page.
