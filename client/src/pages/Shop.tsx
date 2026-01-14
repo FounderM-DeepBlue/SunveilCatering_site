@@ -121,33 +121,6 @@ export default function Shop() {
               </div>
             </div>
 
-            {/* Map View (Visible on toggle or split screen) */}
-            <div className={cn(
-              "bg-[hsl(var(--color-muted))] rounded-xl overflow-hidden relative",
-              viewMode === 'grid' ? "hidden lg:block lg:w-1/2 sticky top-40 h-[600px]" : "w-full h-full"
-            )}>
-              {/* Fallback for no API key */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-[hsl(var(--color-cream))] p-8 text-center">
-                 <MapIcon className="w-12 h-12 text-[hsl(var(--color-forest))] mb-4 opacity-50" />
-                 <h3 className="font-bold text-lg text-[hsl(var(--color-deep-forest))]">Interactive Map</h3>
-                 <p className="text-sm text-[hsl(var(--color-moss))]/70 max-w-xs mb-8">
-                   Explore our partner locations across Atlanta. Filter products to see availability near you.
-                 </p>
-                 
-                 {/* Mock Locations List */}
-                 <div className="w-full max-w-sm space-y-3 text-left">
-                   {locations.map(loc => (
-                     <div key={loc.id} className="bg-white p-4 rounded-lg border border-[hsl(var(--color-border))] shadow-sm hover:border-[hsl(var(--color-forest))] cursor-pointer transition-colors">
-                       <div className="flex justify-between">
-                         <h4 className="font-bold text-[hsl(var(--color-deep-forest))]">{loc.name}</h4>
-                         <span className="text-xs bg-[hsl(var(--color-cream))] px-2 py-1 rounded text-[hsl(var(--color-moss))]">{loc.type}</span>
-                       </div>
-                       <p className="text-xs text-[hsl(var(--color-moss))]/70 mt-1">{loc.address}</p>
-                     </div>
-                   ))}
-                 </div>
-              </div>
-            </div>
 
           </div>
         </div>
