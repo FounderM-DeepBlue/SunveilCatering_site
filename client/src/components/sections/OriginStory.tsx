@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import storyImg from "@assets/generated_images/somali_baking_tradition_story_image.png";
 import pattern from "@assets/generated_images/somali_textile_pattern_texture.png";
 
@@ -57,9 +58,11 @@ export function OriginStory() {
               </p>
             </div>
             
-            <button className="mt-8 text-[hsl(var(--color-forest))] font-bold text-lg border-b-2 border-[hsl(var(--color-amber))] pb-1 hover:text-[hsl(var(--color-amber))] transition-colors">
-              Read Our Full Story
-            </button>
+            <Link href="/story">
+              <a className="inline-block mt-8 text-[hsl(var(--color-forest))] font-bold text-lg border-b-2 border-[hsl(var(--color-amber))] pb-1 hover:text-[hsl(var(--color-amber))] transition-colors">
+                Read Our Full Story
+              </a>
+            </Link>
           </motion.div>
         </div>
       </div>
