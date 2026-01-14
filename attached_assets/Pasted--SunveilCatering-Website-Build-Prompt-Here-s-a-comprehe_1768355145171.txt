@@ -1,0 +1,419 @@
+# SunveilCatering Website Build Prompt
+
+Here's a comprehensive prompt you can feed to your AI agent to build this project:
+
+---
+
+## Project Overview
+
+Build a modern e-commerce website for **SunveilCatering**, a Somali-owned artisan bakery based in Atlanta that sells pastries both direct-to-consumer (by the dozen with delivery) and through local retail partners. The design should blend Blue Apron's clean UX patterns with brand cult psychology principles to create an emotionally compelling experience.
+
+---
+
+## Brand Identity
+
+### Color System
+```
+Primary Colors:
+- Forest Green: #2d5f3b (CTAs, headers, trust signals)
+- Deep Forest: #1a3529 (navigation, footer, premium highlights)
+- Dark Moss: #1a3524 (body text, borders)
+
+Accent Colors:
+- Amber: #ba8919 (heritage storytelling, warmth, highlights)
+- Rust: #6c4026 (call-out boxes, earthy texture elements)
+
+Neutral:
+- Off-white/cream backgrounds
+- White for cards and content areas
+```
+
+### Brand Voice
+- Warm, authentic, culturally proud
+- Storytelling-forward (Somali heritage is central)
+- Community-focused (both local shops and direct customers)
+- Premium but accessible
+
+---
+
+## Technical Stack
+
+- **Hosting**: Azure (Static Web Apps for frontend, Container Apps for API)
+- **Database**: Azure SQL Database
+- **Caching**: Azure Cache for Redis (cart management, sessions)
+- **Payments**: Stripe (Payment Intents API with Stripe Elements)
+- **Maps**: Google Maps API for store locator
+- **Frontend**: Next.js with TypeScript, Tailwind CSS
+- **Image Storage**: Azure Blob Storage with CDN
+
+---
+
+## Site Architecture
+
+### Pages to Build
+
+1. **Homepage** (`/`)
+2. **Shop/Products** (`/shop`)
+3. **Product Detail** (`/shop/[product-slug]`)
+4. **Our Story** (`/our-story`)
+5. **Find Us / Store Locator** (`/locations`)
+6. **Cart** (`/cart`)
+7. **Checkout** (`/checkout`)
+8. **Order Confirmation** (`/order/confirmation`)
+9. **Account** (`/account`) - order history, saved addresses
+
+---
+
+## Page Specifications
+
+### Homepage Sections (in order)
+
+**1. Hero Section**
+- Full-width cinematic image or video background showing golden pastries, hands kneading dough
+- Headline: "Pastries Crafted from Somali Tradition, Baked Fresh Daily"
+- Subheadline: Brief value proposition
+- Two CTAs side by side:
+  - Primary (green): "Order by the Dozen →"
+  - Secondary (outlined): "Find Us Locally"
+- Trust badge strip: "Same-Day Delivery in ATL | Overnight Nationwide | Halal Certified"
+
+**2. Origin Story Section**
+- Large format founder/family image with Somali cultural elements
+- Narrative text blocks:
+  - "Recipes passed down through three generations"
+  - "From Mogadishu kitchens to Atlanta's heart"
+- Subtle geometric patterns inspired by Somali textiles (amber/rust accents)
+- CTA: "Read Our Full Story →"
+
+**3. Featured Products Grid**
+- 3-4 hero products with:
+  - High-quality product image
+  - Somali name + English description
+  - Price per dozen
+  - Quick "Add to Box" button
+- Section header: "Our Signature Pastries"
+
+**4. How It Works**
+- 3-step horizontal process visualization:
+  1. "Order by 10 AM" - icon + brief description
+  2. "Hand-packed at noon" - icon + brief description
+  3. "Delivered by 5 PM" - icon + brief description
+- Clean, Blue Apron-style minimal design
+
+**5. Store Locator Teaser**
+- Mini map preview of ATL area with pins
+- Header: "Find Us at 30+ Local Partners"
+- List 3-4 featured partner shops
+- CTA: "View All Locations →"
+
+**6. Social Proof / Community**
+- Customer testimonials (2-3 rotating)
+- Instagram feed embed or curated UGC photos
+- "Join the Sunveil Circle" newsletter signup with lead magnet: "Get 5 Traditional Somali Recipes"
+
+**7. Footer**
+- Navigation links
+- Contact info
+- Social media icons
+- Newsletter signup (compact)
+- "Halal Certified" badge
+- Copyright
+
+---
+
+### Shop Page (`/shop`)
+
+**Layout:**
+- Left sidebar (desktop) / top filters (mobile):
+  - Categories: Flatbreads, Biscuits, Fusion, Seasonal
+  - Dietary: Halal, Vegetarian, Nut-Free
+  - Sort: Popular, Price, Newest
+
+**Product Grid:**
+- Card design:
+  - Product image (square, hover zoom effect)
+  - Somali name (larger) + English name (smaller)
+  - Brief description (1 line)
+  - Price: "$24/dozen" with smaller "$2.50 each at partners"
+  - "Add to Dozen Box" button
+  - "Available at X locations" link
+
+**Persistent Dozen Box Builder:**
+- Sticky element (bottom on mobile, sidebar on desktop)
+- Shows: "Your Dozen Box: 5/12 items"
+- Progress bar visualization
+- Mini thumbnails of selected items
+- "Complete Your Box →" CTA when 12 reached
+- Allow mixing: "Choose any combination"
+
+---
+
+### Product Detail Page (`/shop/[slug]`)
+
+**Content:**
+- Large product gallery (multiple angles)
+- Somali name with pronunciation guide
+- English name and description
+- Origin story snippet for this specific pastry
+- Price per dozen + quantity selector
+- "Add to Dozen Box" primary CTA
+- Ingredients list
+- Nutritional info (expandable)
+- "Also available at:" list of local partners carrying this item
+- Related products carousel
+
+---
+
+### Our Story Page (`/our-story`)
+
+**Sections:**
+- Hero image with family/founder
+- Long-form narrative with parallax scrolling:
+  - Somalia origins
+  - Journey to Atlanta
+  - Starting the business
+  - Community mission
+- Timeline visualization of key milestones
+- Values section: Community, Authenticity, Quality, Tradition
+- Team photos (if applicable)
+- Press mentions / media features
+- CTA: "Taste Our Story →" (link to shop)
+
+---
+
+### Store Locator Page (`/locations`)
+
+**Features:**
+- Full-width interactive Google Map
+- Clustered markers for partner locations
+- Sidebar/overlay list of locations:
+  - Shop name
+  - Address
+  - Distance from user (request geolocation)
+  - Hours
+  - Phone
+  - Products available at this location
+  - "Get Directions" link
+
+**Filters:**
+- "Carries [specific pastry]" dropdown
+- Partner type: Coffee Shop, Grocery, Deli, Restaurant
+- "Open Now" toggle
+
+**Additional:**
+- "Request at your local shop" form for expansion requests
+- "Become a Partner" CTA for B2B inquiries
+
+---
+
+### Cart Page (`/cart`)
+
+**Layout:**
+- Line items with:
+  - Product image thumbnail
+  - Name
+  - Quantity selector
+  - Unit price
+  - Line total
+  - Remove button
+- Order summary sidebar:
+  - Subtotal
+  - Estimated tax
+  - Shipping (calculated after ZIP entry)
+  - Total
+- ZIP code checker: "Enter ZIP for delivery options"
+  - Response: "✅ Same-day delivery available!" or "✅ Overnight shipping: $X"
+- Scarcity messaging: "Fresh batch slots: 3 left for tomorrow"
+- "Proceed to Checkout" CTA
+- "Continue Shopping" link
+
+---
+
+### Checkout Page (`/checkout`)
+
+**3-Step Flow (Blue Apron style):**
+
+**Step 1: Delivery**
+- Delivery address form (with Google Places autocomplete)
+- Delivery date/time selector
+- Special instructions field
+- Save address checkbox (for logged-in users)
+
+**Step 2: Payment**
+- Stripe Elements embedded payment form
+- Supports: Cards, Apple Pay, Google Pay
+- Billing address (same as delivery checkbox)
+
+**Step 3: Review & Confirm**
+- Order summary
+- Delivery details
+- Payment method summary
+- "Place Order" CTA
+- Terms acceptance checkbox
+
+**Sidebar throughout:**
+- Persistent order summary
+- Items in box
+- Totals
+
+---
+
+### Order Confirmation (`/order/confirmation`)
+
+**Content:**
+- Success message with order number
+- Order details summary
+- Estimated delivery date/time
+- "Track Your Order" (if applicable)
+- "Continue Shopping" CTA
+- Email confirmation notice
+
+---
+
+## Database Schema Requirements
+
+```sql
+-- Core tables needed:
+
+products
+- id, sku, somali_name, english_name, slug, description, origin_story
+- base_price_dozen, base_price_single, category_id
+- is_halal, is_vegetarian, is_nut_free
+- image_urls (JSON array), is_active, created_at, updated_at
+
+categories
+- id, name, slug, description, display_order
+
+partner_locations
+- id, name, address, city, state, zip, lat, lng
+- phone, hours (JSON), partner_type, is_active
+- products_available (JSON array of product IDs)
+
+orders
+- id, order_number, customer_id, status
+- delivery_address (JSON), delivery_date, delivery_instructions
+- subtotal, tax, shipping, total
+- stripe_payment_intent_id, created_at, updated_at
+
+order_items
+- id, order_id, product_id, quantity, unit_price, line_total
+
+customers
+- id, email, password_hash, first_name, last_name
+- phone, default_address (JSON), stripe_customer_id
+- created_at
+
+cart_sessions (Redis structure, not SQL)
+- session_id → { items: [...], created_at, updated_at }
+```
+
+---
+
+## API Endpoints Required
+
+```
+Products:
+GET    /api/products              - List all products (with filters)
+GET    /api/products/:slug        - Single product detail
+
+Categories:
+GET    /api/categories            - List categories
+
+Locations:
+GET    /api/locations             - List partner locations (with filters)
+GET    /api/locations/nearby      - Get locations near lat/lng
+
+Cart:
+GET    /api/cart                  - Get current cart
+POST   /api/cart/items            - Add item to cart
+PATCH  /api/cart/items/:id        - Update item quantity
+DELETE /api/cart/items/:id        - Remove item
+
+Checkout:
+POST   /api/checkout/delivery-check   - Check ZIP code delivery options
+POST   /api/checkout/create-payment   - Create Stripe payment intent
+POST   /api/checkout/confirm          - Confirm and create order
+
+Orders:
+GET    /api/orders                - List user's orders
+GET    /api/orders/:id            - Single order detail
+
+Webhooks:
+POST   /api/webhooks/stripe       - Stripe webhook handler
+
+Auth:
+POST   /api/auth/register
+POST   /api/auth/login
+POST   /api/auth/logout
+GET    /api/auth/me
+```
+
+---
+
+## Key UX Requirements
+
+1. **Mobile-first responsive design** - 70%+ traffic will be mobile
+2. **Lazy loading** for all product images
+3. **Skeleton loaders** while content fetches
+4. **Persistent cart state** across sessions (Redis + localStorage fallback)
+5. **Accessibility**: WCAG 2.1 AA compliance, test green/white contrast ratios
+6. **Page transitions**: Smooth, subtle animations
+7. **Form validation**: Inline, real-time feedback
+8. **Error states**: Friendly error messages with recovery actions
+
+---
+
+## Brand Cult Psychology Elements to Implement
+
+1. **Scarcity**: "Fresh batch slots: X left for tomorrow" on cart/checkout
+2. **Exclusivity**: "Small-batch daily" messaging throughout
+3. **Origin myth**: Somali heritage story prominently on homepage and product pages
+4. **Ritual creation**: "Start your morning with tradition" / "Sunday pastry tradition"
+5. **Insider language**: Somali names with pronunciation guides
+6. **Community**: Highlight both local partners and direct customers as part of "movement"
+7. **Progress gamification**: Dozen box builder with visual progress (5/12 items)
+
+---
+
+## Deliverables Checklist
+
+- [ ] Design system / component library
+- [ ] All page layouts (responsive)
+- [ ] Product card component
+- [ ] Dozen box builder component
+- [ ] Store locator with Google Maps integration
+- [ ] Stripe checkout integration
+- [ ] Cart management (Redis-backed)
+- [ ] User authentication flow
+- [ ] Order management system
+- [ ] Admin panel for products/orders/locations (optional MVP)
+- [ ] Email templates (order confirmation, shipping)
+- [ ] SEO meta tags and Open Graph images
+- [ ] Analytics integration (GA4)
+
+---
+
+## Development Phases
+
+**Phase 1 (MVP):**
+- Homepage with hero, story teaser, featured products
+- Shop page with dozen box builder
+- Cart and Stripe checkout
+- Order confirmation
+- 6 core products seeded
+
+**Phase 2:**
+- Store locator with full map functionality
+- Our Story page
+- User accounts and order history
+- Email notifications
+
+**Phase 3:**
+- Subscription/loyalty program ("Sunveil Circle")
+- Reviews and ratings
+- Advanced inventory management
+- Partner portal for B2B
+
+---
+
+Use this prompt as your north star. Build mobile-first, test on real devices, and prioritize the checkout flow—that's where revenue lives.
