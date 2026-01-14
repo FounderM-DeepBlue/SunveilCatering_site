@@ -78,9 +78,6 @@ export function Navbar() {
                 </span>
               )}
             </button>
-            <button className="bg-[hsl(var(--color-forest))] text-[hsl(var(--color-forest-foreground))] px-5 py-2 rounded-full text-sm font-medium hover:bg-[hsl(var(--color-deep-forest))] transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200">
-              Order Now
-            </button>
           </div>
 
           {/* Mobile Toggle */}
@@ -113,9 +110,6 @@ export function Navbar() {
                   </a>
                 </Link>
               ))}
-              <button className="w-full bg-[hsl(var(--color-forest))] text-[hsl(var(--color-forest-foreground))] py-3 rounded-md font-medium">
-                Order Online
-              </button>
             </div>
           </motion.div>
         )}
