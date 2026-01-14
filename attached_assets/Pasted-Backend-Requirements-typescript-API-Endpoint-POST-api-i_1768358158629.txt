@@ -1,0 +1,78 @@
+Backend Requirements
+typescript// API Endpoint
+POST /api/inquiries/catering
+
+// Request body: CateringInquiry object
+
+// Actions on submission:
+1. Store inquiry in database (inquiries table)
+2. Send confirmation email to customer
+3. Send notification email to Sunveil team with full details
+4. Optional: Send to CRM/Slack webhook for team notification
+
+// Response:
+{
+  success: true,
+  inquiryId: "CAT-2024-001234",
+  message: "Inquiry submitted successfully"
+}
+```
+
+**Email Templates Needed**
+```
+1. Customer confirmation email:
+   - Thank you message
+   - Inquiry reference number
+   - Summary of items requested
+   - Expected response timeframe
+   - Contact info for urgent inquiries
+
+2. Internal team notification:
+   - All inquiry details
+   - Customer contact info
+   - Formatted product list with quantities
+   - Quick reply button/link
+```
+
+---
+
+## Feature Set 2: Full E-Commerce Functionality & Product Imagery
+
+### Hyper-Realistic Product Image Generation
+
+Generate professional, appetizing product photography for every menu item. Each image should:
+```
+Style Guidelines:
+- Warm, natural lighting (golden hour feel)
+- Shallow depth of field (product in focus, soft background)
+- Rustic/artisan styling (wooden boards, linen napkins, Somali textile hints)
+- Steam/freshness cues where appropriate
+- Consistent color grading matching brand palette
+- Multiple angles per product (hero, detail, cross-section where applicable)
+
+Products Requiring Images:
+---------------------------
+
+BREADS & MUFFINS:
+1. Zucchini Bread - Moist loaf with visible zucchini shreds, sliced to show interior
+2. Banana Nut Bread - Golden brown with walnut pieces visible
+3. Cranberry Orange Bread - Vibrant orange zest, cranberry jewels throughout
+4. Lemon Poppy Seed Bread - Bright, glazed top with poppy seeds
+5. Blueberry Muffin - Bursting with berries, sugar-crusted top
+6. Morning Glory Muffin - Hearty, carrot and raisin visible
+
+DANISH & ROLLS:
+7. Cheese Danish - Flaky layers, cream cheese center glistening
+8. Cinnamon Roll - Spiral visible, cream cheese frosting dripping
+9. Butter Croissant - Golden, shattered flaky layers
+10. Chocolate Croissant - Dark chocolate peeking through layers
+
+SOMALI SPECIALTIES:
+11. Sabaayad - Traditional flatbread, slightly charred spots, folded/stacked
+12. Buskud - Traditional biscuits, arranged in traditional manner
+13. Malawah - Honeycomb texture, served with tea styling
+14. Cambuulo - Traditional presentation with butter/sugar
+
+FUSION ITEMS:
+15. Cardamom Rose Danish - Elegant, rose petals, cardamom pods as props
+16. Somali Spiced Banana Bread - Xawaash spices visible

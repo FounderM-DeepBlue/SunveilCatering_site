@@ -1,0 +1,77 @@
+Filtering Logic
+typescriptinterface MenuFilters {
+  search: string;           // Text search across product names
+  categories: string[];     // Breads, Danish, Somali, Fusion
+  dietary: string[];        // Halal, Vegetarian, Nut-Free
+  locationId?: string;      // Filter to specific location's inventory
+  availableNow?: boolean;   // Only show products at currently open locations
+}
+
+// Filter interactions:
+
+1. Select category "Somali Specialties":
+   → Grid shows only Somali items
+   → Map highlights only locations carrying Somali items
+
+2. Select specific location "Refuge Coffee":
+   → Grid shows only products available at Refuge
+   → Map centers on Refuge, dims other pins
+
+3. Click product "Sabaayad":
+   → Product detail expands
+   → Map highlights all locations carrying Sabaayad
+   → Other pins dim but remain visible
+
+4. Search "cinnamon":
+   → Grid filters to Cinnamon Roll
+   → Map highlights locations carrying it
+Location Data Structure
+typescriptinterface PartnerLocation {
+  id: string;
+  name: string;
+  partnerType: 'cafe' | 'grocery' | 'restaurant' | 'market';
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+  };
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  phone: string;
+  hours: {
+    [day: string]: { open: string; close: string } | 'closed';
+  };
+  productsCarried: string[];  // Array of product IDs
+  isFeatured: boolean;
+  deliveryDays: string[];     // Days Sunveil delivers to this location
+  description?: string;
+  image?: string;
+}
+
+// Example:
+{
+  id: "loc_refuge_coffee",
+  name: "Refuge Coffee Co.",
+  partnerType: "cafe",
+  address: {
+    street: "4170 E Ponce de Leon Ave",
+    city: "Clarkston",
+    state: "GA",
+    zip: "30021"
+  },
+  coordinates: { lat: 33.8095, lng: -84.2428 },
+  phone: "(404) 555-0123",
+  hours: {
+    monday: { open: "07:00", close: "18:00" },
+    tuesday: { open: "07:00", close: "18:00" },
+    // ...
+    sunday: "closed"
+  },
+  productsCarried: ["sabaayad", "buskud", "croissant", "cinnamon_roll"],
+  isFeatured: true,
+  deliveryDays: ["monday", "wednesday", "friday"],
+  description: "Community-focused coffee shop supporting refugee employment"
+}

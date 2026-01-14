@@ -1,0 +1,104 @@
+API Endpoints to Add
+typescript// Catering/Wholesale Endpoints
+POST   /api/inquiries              // Submit new inquiry
+GET    /api/inquiries/:id          // Get inquiry status (for confirmation page)
+
+// Enhanced Product Endpoints  
+GET    /api/products/:id/locations // Get locations carrying specific product
+
+// Enhanced Location Endpoints
+GET    /api/locations/:id/products // Get products at specific location
+GET    /api/locations/search       // Search with filters (product, open now, etc.)
+
+// Webhook for notifications
+POST   /api/webhooks/inquiry-notify // Internal: trigger email notifications
+
+Animation Library Requirements
+typescript// Required packages:
+npm install framer-motion
+npm install @react-spring/web  // Alternative/supplement for physics-based
+npm install canvas-confetti    // For celebration moments
+
+// Animation constants (create /lib/animations.ts)
+export const animations = {
+  // Timing
+  fast: 0.15,
+  normal: 0.3,
+  slow: 0.5,
+  
+  // Easings
+  bounce: [0.68, -0.55, 0.265, 1.55],
+  smooth: [0.25, 0.1, 0.25, 1],
+  snappy: [0.25, 0.46, 0.45, 0.94],
+  
+  // Springs
+  gentle: { stiffness: 120, damping: 14 },
+  bouncy: { stiffness: 300, damping: 10 },
+  stiff: { stiffness: 400, damping: 30 },
+};
+```
+
+---
+
+## Deliverables Checklist
+
+### Catering/Wholesale Page
+- [ ] Hero section with dual-path CTAs
+- [ ] Inquiry type toggle (Catering/Wholesale)
+- [ ] Product selection grid with add-to-inquiry functionality
+- [ ] Quantity selectors with minimum order enforcement
+- [ ] Persistent inquiry summary sidebar/bottom sheet
+- [ ] Multi-step form (Selection → Details → Contact → Confirmation)
+- [ ] Form validation with inline errors
+- [ ] Submission API integration
+- [ ] Confirmation page with inquiry reference
+- [ ] Email notifications (customer + internal team)
+
+### Product Imagery
+- [ ] Generate hyper-realistic images for all 16+ products
+- [ ] Multiple angles per product (hero, detail, slice)
+- [ ] Consistent styling and lighting
+- [ ] Optimized for web (WebP format, responsive sizes)
+- [ ] Upload to Azure Blob Storage with CDN
+
+### E-Commerce Animations
+- [ ] Add to Box button micro-interaction
+- [ ] Flying product animation to cart
+- [ ] Cart counter bounce animation
+- [ ] Progress bar fill animation
+- [ ] Box completion celebration
+- [ ] Remove item animation
+- [ ] Page transition animations
+
+### Unified Menu + Locations
+- [ ] Split view layout (product grid + map)
+- [ ] Mobile tab navigation
+- [ ] Google Maps integration with clustering
+- [ ] Custom branded map pins
+- [ ] Product-to-location filtering
+- [ ] Location-to-product filtering
+- [ ] "Available at X locations" interaction
+- [ ] Location info cards with product thumbnails
+- [ ] Geolocation and distance sorting
+- [ ] "Open Now" indicator
+- [ ] Get Directions deep linking
+
+---
+
+## Priority Order for Development
+```
+Phase 1 (Immediate):
+1. Generate all product images
+2. Implement Add to Box animations
+3. Build Catering/Wholesale inquiry form
+
+Phase 2 (Next):
+4. Merge Menu + Locations page
+5. Google Maps integration
+6. Product-location cross-filtering
+
+Phase 3 (Polish):
+7. Email notification system
+8. Celebration animations
+9. Mobile optimization pass
+10. Performance optimization

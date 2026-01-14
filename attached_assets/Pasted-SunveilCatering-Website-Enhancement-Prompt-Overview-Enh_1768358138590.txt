@@ -1,0 +1,109 @@
+SunveilCatering Website Enhancement Prompt
+Overview
+Enhance the existing SunveilCatering website with three major feature sets: (1) a fully functional Catering/Wholesale inquiry system with cart builder, (2) complete interactive e-commerce functionality with hyper-realistic product imagery, and (3) a unified Menu + Locations page that shows product availability by partner location.
+
+Feature Set 1: Catering & Wholesale Page (/catering)
+Purpose
+Allow businesses, event planners, and bulk buyers to build a custom catering/wholesale inquiry cart and submit it as a lead/request form. This is NOT a checkout—it's a lead generation tool that sends inquiries to the Sunveil team.
+Page Structure
+Hero Section
+Headline: "Catering & Wholesale Partnerships"
+Subheadline: "Bring Somali tradition to your events, cafés, and retail shelves"
+Background: Elegant spread of pastries at a catered event setting
+Two paths highlighted:
+  - "Planning an Event?" → Catering inquiry
+  - "Stock Your Shelves?" → Wholesale inquiry
+Inquiry Type Selector
+Toggle or tab interface:
+  [Catering] | [Wholesale]
+
+Catering: Events, weddings, corporate meetings, private parties
+Wholesale: Cafés, restaurants, grocery stores, food service
+Catering/Wholesale Cart Builder
+Build an interactive "Interest Cart" where users select products and quantities they're interested in:
+typescriptinterface CateringItem {
+  productId: string;
+  productName: string;
+  quantity: number;        // In dozens for catering, cases for wholesale
+  unitType: 'dozen' | 'case' | 'unit';
+  notes?: string;          // Special requests per item
+}
+
+interface CateringInquiry {
+  inquiryType: 'catering' | 'wholesale';
+  items: CateringItem[];
+  
+  // Contact Information
+  contactName: string;
+  businessName?: string;
+  email: string;
+  phone: string;
+  
+  // Event/Order Details (conditional fields)
+  // For Catering:
+  eventDate?: Date;
+  eventType?: string;      // Wedding, Corporate, Private Party, Other
+  guestCount?: number;
+  eventLocation?: string;
+  
+  // For Wholesale:
+  businessType?: string;   // Café, Restaurant, Grocery, Other
+  deliveryFrequency?: string; // One-time, Weekly, Bi-weekly, Monthly
+  estimatedVolume?: string;
+  
+  // Common
+  additionalNotes?: string;
+  howDidYouHear?: string;
+}
+```
+
+**Product Selection Grid**
+
+Display all menu items available for catering/wholesale with:
+```
+- Hyper-realistic product image
+- Somali name + English name
+- Brief description
+- Minimum order quantity (e.g., "Min: 2 dozen")
+- Quantity selector (dozen increments for catering, case for wholesale)
+- "Add to Inquiry" button with animation
+- Running total in persistent sidebar/bottom bar
+```
+
+**Inquiry Summary Sidebar (Desktop) / Bottom Sheet (Mobile)**
+```
+"Your Catering Inquiry"
+---------------------------
+[Product thumbnail] Sabaayad × 5 dozen
+[Product thumbnail] Buskud × 3 dozen
+[Product thumbnail] Zucchini Bread × 2 dozen
+---------------------------
+Total Items: 10 dozen
+
+[Continue to Details →]
+```
+
+**Multi-Step Form Flow**
+```
+Step 1: Build Your Selection
+  - Browse and add products to inquiry cart
+  - Set quantities and any item-specific notes
+  - "Continue to Details →"
+
+Step 2: Event/Business Details
+  - Catering path: Event date, type, guest count, location
+  - Wholesale path: Business type, delivery frequency, volume
+  - "Continue to Contact Info →"
+
+Step 3: Contact Information
+  - Name, business name, email, phone
+  - How did you hear about us?
+  - Additional notes/special requests
+  - Terms acknowledgment checkbox
+  - "Submit Inquiry →"
+
+Step 4: Confirmation
+  - Success message with inquiry reference number
+  - "We'll respond within 24-48 hours"
+  - Summary of submitted inquiry
+  - Option to download/print inquiry summary

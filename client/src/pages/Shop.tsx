@@ -1,131 +1,166 @@
 import { useState } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { Filter, Plus } from "lucide-react";
-import heroBg from "@assets/generated_images/cinematic_somali_pastries_hero_background.png";
+import { Filter, Map as MapIcon, Grid, Search } from "lucide-react";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { ProductCard } from "@/components/ProductCard";
+import { DozenBoxBuilder } from "@/components/DozenBoxBuilder";
+import { products, locations } from "@/lib/data";
+import { cn } from "@/lib/utils";
 
-const products = [
-  { id: 1, name: "Sabaayad", price: 24, category: "Flatbreads", image: heroBg, desc: "Flaky, multi-layered Somali flatbread." },
-  { id: 2, name: "Buskud", price: 24, category: "Biscuits", image: heroBg, desc: "Cardamom infused tea biscuits." },
-  { id: 3, name: "Zucchini Bread", price: 28, category: "Breads", image: heroBg, desc: "Moist, spiced zucchini loaf." },
-  { id: 4, name: "Lemon Poppy Loaf", price: 28, category: "Breads", image: heroBg, desc: "Bright lemon flavor with poppy seeds." },
-  { id: 5, name: "Blueberry Muffin", price: 32, category: "Muffins", image: heroBg, desc: "Bursting with fresh blueberries." },
-  { id: 6, name: "Apple Cheese Danish", price: 35, category: "Pastries", image: heroBg, desc: "Sweet apple filling with cream cheese." },
-];
-
-const categories = ["All", "Flatbreads", "Biscuits", "Breads", "Muffins", "Pastries"];
+// Mock Google Maps setup (since we don't have a real API key in this env)
+const containerStyle = { width: '100%', height: '100%' };
+const center = { lat: 33.7490, lng: -84.3880 }; // Atlanta
 
 export default function Shop() {
+  const [viewMode, setViewMode] = useState<'grid' | 'map'>('grid');
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [boxItems, setBoxItems] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredProducts = selectedCategory === "All" 
-    ? products 
-    : products.filter(p => p.category === selectedCategory);
+  // Categories derived from products
+  const categories = ["All", ...Array.from(new Set(products.map(p => p.category)))];
+
+  // Filtering Logic
+  const filteredProducts = products.filter(p => {
+    const matchesCategory = selectedCategory === "All" || p.category === selectedCategory;
+    const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  // Box Logic
+  const addToBox = (productId: string) => {
+    if (boxItems.length < 12) {
+      setBoxItems([...boxItems, productId]);
+    }
+  };
+
+  const removeFromBox = (index: number) => {
+    const newItems = [...boxItems];
+    newItems.splice(index, 1);
+    setBoxItems(newItems);
+  };
 
   return (
     <div className="min-h-screen bg-[hsl(var(--color-cream))] font-sans">
       <Navbar />
       
-      <main className="pt-24 pb-20">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="mb-10 text-center">
-            <h1 className="text-4xl font-serif font-bold text-[hsl(var(--color-deep-forest))] mb-4">Order for Delivery</h1>
-            <p className="text-[hsl(var(--color-moss))]/70">Freshly baked in Atlanta. Delivered to your door.</p>
+      <main className="pt-24 pb-32">
+        <div className="container mx-auto px-4 md:px-6 mb-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div>
+              <h1 className="text-4xl font-serif font-bold text-[hsl(var(--color-deep-forest))]">Order & Discovery</h1>
+              <p className="text-[hsl(var(--color-moss))]/70">Find your favorites for delivery or at a local shop.</p>
+            </div>
+            
+            {/* View Toggle */}
+            <div className="flex bg-white rounded-lg border border-[hsl(var(--color-border))] p-1 self-start">
+              <button 
+                onClick={() => setViewMode('grid')}
+                className={cn("px-4 py-2 rounded-md flex items-center gap-2 text-sm font-medium transition-colors", viewMode === 'grid' ? "bg-[hsl(var(--color-forest))] text-white" : "text-[hsl(var(--color-moss))] hover:bg-[hsl(var(--color-cream))]")}
+              >
+                <Grid className="w-4 h-4" /> Menu
+              </button>
+              <button 
+                onClick={() => setViewMode('map')}
+                className={cn("px-4 py-2 rounded-md flex items-center gap-2 text-sm font-medium transition-colors", viewMode === 'map' ? "bg-[hsl(var(--color-forest))] text-white" : "text-[hsl(var(--color-moss))] hover:bg-[hsl(var(--color-cream))]")}
+              >
+                <MapIcon className="w-4 h-4" /> Locations
+              </button>
+            </div>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Sidebar Filters */}
-            <aside className="w-full lg:w-64 flex-shrink-0">
-              <div className="sticky top-24">
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-[hsl(var(--color-border))]">
-                  <div className="flex items-center gap-2 mb-4 text-[hsl(var(--color-deep-forest))] font-bold">
-                    <Filter className="w-4 h-4" /> Filters
-                  </div>
-                  <ul className="space-y-2">
-                    {categories.map(cat => (
-                      <li key={cat}>
-                        <button 
-                          onClick={() => setSelectedCategory(cat)}
-                          className={`w-full text-left px-3 py-2 rounded-md transition-colors ${selectedCategory === cat ? 'bg-[hsl(var(--color-forest))] text-white' : 'hover:bg-[hsl(var(--color-cream))] text-[hsl(var(--color-moss))]/80'}`}
-                        >
-                          {cat}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <div className="mt-8 pt-6 border-t border-[hsl(var(--color-border))]">
-                    <h4 className="font-bold text-sm mb-3 text-[hsl(var(--color-deep-forest))]">Dietary</h4>
-                    <div className="space-y-2">
-                      <label className="flex items-center gap-2 text-sm text-[hsl(var(--color-moss))]/80 cursor-pointer">
-                        <input type="checkbox" className="rounded text-[hsl(var(--color-forest))]" /> Halal
-                      </label>
-                      <label className="flex items-center gap-2 text-sm text-[hsl(var(--color-moss))]/80 cursor-pointer">
-                        <input type="checkbox" className="rounded text-[hsl(var(--color-forest))]" /> Vegetarian
-                      </label>
-                      <label className="flex items-center gap-2 text-sm text-[hsl(var(--color-moss))]/80 cursor-pointer">
-                        <input type="checkbox" className="rounded text-[hsl(var(--color-forest))]" /> Nut-Free
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </aside>
+          {/* Filter Bar */}
+          <div className="bg-white p-4 rounded-xl border border-[hsl(var(--color-border))] shadow-sm flex flex-col md:flex-row gap-4 items-center mb-8 sticky top-20 z-30">
+            <div className="relative w-full md:w-64">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[hsl(var(--color-moss))]/50" />
+              <input 
+                type="text" 
+                placeholder="Search pastries..." 
+                className="w-full pl-9 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[hsl(var(--color-forest))]"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            
+            <div className="flex gap-2 overflow-x-auto w-full pb-2 md:pb-0 scrollbar-hide">
+              {categories.map(cat => (
+                <button 
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={cn(
+                    "whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors border",
+                    selectedCategory === cat 
+                      ? "bg-[hsl(var(--color-forest))] text-white border-transparent" 
+                      : "bg-[hsl(var(--color-cream))] text-[hsl(var(--color-moss))] border-transparent hover:border-[hsl(var(--color-forest))]"
+                  )}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
 
-            {/* Product Grid */}
-            <div className="flex-1">
-              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {/* Content Area */}
+          <div className="flex gap-8 h-[calc(100vh-250px)] min-h-[600px]">
+            
+            {/* Product Grid (Always visible on desktop split, toggled on mobile) */}
+            <div className={cn(
+              "flex-1 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-[hsl(var(--color-border))]",
+              viewMode === 'map' ? "hidden lg:block lg:w-1/2" : "w-full"
+            )}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 pb-20">
                 {filteredProducts.map(product => (
-                  <div key={product.id} className="group bg-white rounded-xl overflow-hidden border border-[hsl(var(--color-border))] shadow-sm hover:shadow-md transition-shadow">
-                    <div className="aspect-square bg-[hsl(var(--color-muted))] relative overflow-hidden">
-                      <img 
-                        src={product.image} 
-                        alt={product.name} 
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute top-2 right-2 bg-white/90 backdrop-blur text-xs font-bold px-2 py-1 rounded shadow-sm">
-                        ${product.price}/dz
-                      </div>
-                    </div>
-                    <div className="p-4">
-                      <div className="text-xs text-[hsl(var(--color-amber))] font-bold uppercase tracking-wider mb-1">{product.category}</div>
-                      <h3 className="font-serif font-bold text-xl text-[hsl(var(--color-deep-forest))] mb-2">{product.name}</h3>
-                      <p className="text-sm text-[hsl(var(--color-moss))]/70 mb-4 line-clamp-2">{product.desc}</p>
-                      
-                      <button className="w-full bg-[hsl(var(--color-cream))] hover:bg-[hsl(var(--color-forest))] text-[hsl(var(--color-deep-forest))] hover:text-white border border-[hsl(var(--color-deep-forest))] hover:border-transparent font-bold py-2 rounded-md transition-all flex items-center justify-center gap-2">
-                        <Plus className="w-4 h-4" /> Add to Box
-                      </button>
-                    </div>
-                  </div>
+                  <ProductCard 
+                    key={product.id} 
+                    product={product} 
+                    onAddToBox={addToBox}
+                    isInBox={boxItems.includes(product.id)}
+                  />
                 ))}
               </div>
             </div>
+
+            {/* Map View (Visible on toggle or split screen) */}
+            <div className={cn(
+              "bg-[hsl(var(--color-muted))] rounded-xl overflow-hidden relative",
+              viewMode === 'grid' ? "hidden lg:block lg:w-1/2 sticky top-40 h-[600px]" : "w-full h-full"
+            )}>
+              {/* Fallback for no API key */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-[hsl(var(--color-cream))] p-8 text-center">
+                 <MapIcon className="w-12 h-12 text-[hsl(var(--color-forest))] mb-4 opacity-50" />
+                 <h3 className="font-bold text-lg text-[hsl(var(--color-deep-forest))]">Interactive Map</h3>
+                 <p className="text-sm text-[hsl(var(--color-moss))]/70 max-w-xs mb-8">
+                   Explore our partner locations across Atlanta. Filter products to see availability near you.
+                 </p>
+                 
+                 {/* Mock Locations List */}
+                 <div className="w-full max-w-sm space-y-3 text-left">
+                   {locations.map(loc => (
+                     <div key={loc.id} className="bg-white p-4 rounded-lg border border-[hsl(var(--color-border))] shadow-sm hover:border-[hsl(var(--color-forest))] cursor-pointer transition-colors">
+                       <div className="flex justify-between">
+                         <h4 className="font-bold text-[hsl(var(--color-deep-forest))]">{loc.name}</h4>
+                         <span className="text-xs bg-[hsl(var(--color-cream))] px-2 py-1 rounded text-[hsl(var(--color-moss))]">{loc.type}</span>
+                       </div>
+                       <p className="text-xs text-[hsl(var(--color-moss))]/70 mt-1">{loc.address}</p>
+                     </div>
+                   ))}
+                 </div>
+              </div>
+            </div>
+
           </div>
         </div>
+
+        {/* Floating Box Builder */}
+        <DozenBoxBuilder 
+          items={boxItems} 
+          products={products}
+          onRemoveItem={removeFromBox}
+          onClearBox={() => setBoxItems([])}
+        />
         
-        {/* Sticky "Build Your Box" Bar (Visual Mockup) */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[hsl(var(--color-border))] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-4 z-40 transform translate-y-full animate-slide-up-fade-in" style={{ transform: 'none' }}>
-           <div className="container mx-auto px-4 flex items-center justify-between">
-             <div className="flex items-center gap-4">
-               <div className="hidden md:block">
-                 <p className="font-bold text-[hsl(var(--color-deep-forest))]">Your Dozen Box</p>
-                 <p className="text-xs text-[hsl(var(--color-moss))]">Add items to build your box</p>
-               </div>
-               <div className="flex gap-1">
-                 {[...Array(12)].map((_, i) => (
-                   <div key={i} className="w-6 h-8 md:w-8 md:h-10 bg-[hsl(var(--color-muted))] rounded-sm border border-[hsl(var(--color-border))]" />
-                 ))}
-               </div>
-               <span className="font-mono text-sm font-bold ml-2">0/12</span>
-             </div>
-             <button disabled className="bg-[hsl(var(--color-muted))] text-[hsl(var(--color-muted-foreground))] px-6 py-3 rounded-full font-bold cursor-not-allowed">
-               Complete Box
-             </button>
-           </div>
-        </div>
       </main>
-      
-      <Footer />
     </div>
   );
 }

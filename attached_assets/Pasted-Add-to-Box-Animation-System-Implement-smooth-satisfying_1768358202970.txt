@@ -1,0 +1,185 @@
+Add to Box Animation System
+Implement smooth, satisfying micro-interactions:
+typescript// Animation Specifications
+
+1. "Add to Box" Button Animation:
+   - Button press: Scale down to 0.95, spring back
+   - Success state: Checkmark morphs from plus icon
+   - Color transition: Green pulse on success
+   - Duration: 300ms total
+
+2. Flying Product Animation:
+   - Product thumbnail "flies" from card to cart icon
+   - Bezier curve path (arc, not straight line)
+   - Scale down during flight (1 → 0.3)
+   - Slight rotation during flight
+   - Cart icon bounces on receive
+   - Duration: 500-600ms
+
+3. Cart Counter Animation:
+   - Number increment with spring physics
+   - Brief scale up (1.2) then settle
+   - Background pulse on the cart badge
+
+4. Dozen Box Progress Animation:
+   - Progress bar fills smoothly
+   - Milestone celebrations at 6/12 and 12/12
+   - Confetti or sparkle effect when box completed
+   - "Box Complete!" toast notification
+
+5. Remove Item Animation:
+   - Swipe to delete (mobile)
+   - Fade out + collapse height
+   - Cart counter decrements with same spring animation
+
+// Framer Motion Implementation Example:
+const flyToCart = {
+  initial: { 
+    scale: 1, 
+    x: 0, 
+    y: 0, 
+    opacity: 1 
+  },
+  animate: { 
+    scale: 0.3,
+    x: cartPosition.x - itemPosition.x,
+    y: cartPosition.y - itemPosition.y,
+    opacity: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.25, 0.1, 0.25, 1], // Custom bezier
+    }
+  }
+};
+
+const cartBounce = {
+  scale: [1, 1.3, 1],
+  transition: { duration: 0.3, times: [0, 0.5, 1] }
+};
+Product Card Component Enhancement
+typescriptinterface ProductCardProps {
+  product: {
+    id: string;
+    somaliName: string;
+    englishName: string;
+    description: string;
+    pricePerDozen: number;
+    pricePerUnit: number;
+    images: {
+      hero: string;      // Main product shot
+      detail: string;    // Close-up texture
+      slice?: string;    // Cross-section if applicable
+    };
+    category: string;
+    tags: string[];      // Halal, Vegetarian, etc.
+    availableAt: string[]; // Location IDs
+  };
+  onAddToBox: (productId: string) => void;
+  currentBoxCount: number;
+}
+
+// Card Features:
+- Image hover: Subtle zoom (scale 1.05) + shadow lift
+- Quick view modal on image click (gallery of all angles)
+- Quantity selector appears after first add
+- "Added ✓" state persists while in box
+- Availability badge: "Available at 12 locations"
+- Dietary badges: Small icons for Halal, Vegetarian, etc.
+```
+
+---
+
+## Feature Set 3: Unified Menu + Locations Page (`/menu`)
+
+### Concept
+Merge the Menu and Find Us pages into a single, powerful discovery experience. Users can browse the full menu AND see exactly which partner locations carry each item.
+
+### Page Layout
+
+**Header/Filter Bar**
+```
+[Search products...]  [Category ▼]  [Dietary ▼]  [Location ▼]
+
+View toggle: [Grid] [Map]
+```
+
+**Split View Layout (Desktop)**
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        Filter Bar                                │
+├─────────────────────────────────┬───────────────────────────────┤
+│                                 │                               │
+│      Product Grid/List          │     Interactive Map           │
+│      (Scrollable)               │     (Sticky)                  │
+│                                 │                               │
+│   [Product Card]  [Product]     │     🔴 Partner Location       │
+│   [Product Card]  [Product]     │     🔴 Partner Location       │
+│   [Product Card]  [Product]     │        🔴                     │
+│                                 │     🔴    🔴                  │
+│                                 │                               │
+└─────────────────────────────────┴───────────────────────────────┘
+```
+
+**Mobile Layout**
+```
+- Tab toggle: [Products] | [Map]
+- Products tab: Scrollable product grid
+- Map tab: Full-screen map with bottom sheet for location details
+- Persistent filter button (opens modal)
+```
+
+### Product-Location Integration
+
+**On Product Cards:**
+```
+┌─────────────────────────────────┐
+│  [Product Image]                │
+│                                 │
+│  Sabaayad                       │
+│  Somali Flatbread               │
+│  $24/dozen                      │
+│                                 │
+│  📍 Available at 8 locations    │  ← Clickable
+│  [Add to Box]                   │
+└─────────────────────────────────┘
+
+Click "Available at X locations" → 
+  - Highlights those locations on map
+  - Opens drawer/modal listing specific shops:
+    
+    "Find Sabaayad at:"
+    ──────────────────
+    📍 Refuge Coffee (2.3 mi)
+       Clarkston, GA • Open until 6pm
+       [Get Directions]
+    
+    📍 Global Grind (4.1 mi)
+       Decatur, GA • Open until 8pm
+       [Get Directions]
+    
+    📍 Karibu Market (5.8 mi)
+       Stone Mountain, GA • Closes at 7pm
+       [Get Directions]
+```
+
+**On Map Location Pins:**
+```
+Click location pin → Info card appears:
+
+┌─────────────────────────────────┐
+│  Refuge Coffee Co.              │
+│  ⭐ Featured Partner            │
+│  📍 4170 E Ponce de Leon Ave    │
+│     Clarkston, GA 30021         │
+│  🕐 Open · Closes 6pm           │
+│  📞 (404) 555-0123              │
+│                                 │
+│  Products Available:            │
+│  ┌─────┐ ┌─────┐ ┌─────┐       │
+│  │ 🍞  │ │ 🥐  │ │ 🧁  │       │
+│  │Sabaa│ │Crois│ │Muffi│       │
+│  └─────┘ └─────┘ └─────┘       │
+│  +3 more                        │
+│                                 │
+│  [Get Directions] [Call]        │
+└─────────────────────────────────┘

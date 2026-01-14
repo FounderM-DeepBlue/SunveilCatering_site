@@ -1,0 +1,85 @@
+Map Implementation
+typescript// Google Maps Integration
+
+import { GoogleMap, MarkerClusterer, InfoWindow } from '@react-google-maps/api';
+
+// Features:
+1. Clustered markers (zoom out → clusters, zoom in → individual pins)
+2. Custom pin icons matching brand colors
+3. User geolocation with "Near Me" sorting
+4. Info windows with product thumbnails
+5. Directions integration (Google Maps deep link)
+6. "Open Now" visual indicator (green dot on open locations)
+
+// Custom Marker Styling:
+const markerIcon = {
+  path: google.maps.SymbolPath.CIRCLE,
+  fillColor: '#2d5f3b',  // Forest Green
+  fillOpacity: 1,
+  strokeColor: '#1a3529', // Deep Forest
+  strokeWeight: 2,
+  scale: 10,
+};
+
+const featuredMarkerIcon = {
+  ...markerIcon,
+  fillColor: '#ba8919',  // Amber for featured partners
+};
+
+Database Schema Updates
+sql-- Add to existing schema:
+
+-- Catering/Wholesale Inquiries
+CREATE TABLE inquiries (
+    id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    inquiry_number NVARCHAR(20) UNIQUE NOT NULL,  -- CAT-2024-001234
+    inquiry_type NVARCHAR(20) NOT NULL,  -- 'catering' or 'wholesale'
+    status NVARCHAR(20) DEFAULT 'new',   -- new, contacted, quoted, converted, closed
+    
+    -- Contact Info
+    contact_name NVARCHAR(255) NOT NULL,
+    business_name NVARCHAR(255),
+    email NVARCHAR(255) NOT NULL,
+    phone NVARCHAR(20) NOT NULL,
+    
+    -- Event Details (catering)
+    event_date DATE,
+    event_type NVARCHAR(100),
+    guest_count INT,
+    event_location NVARCHAR(500),
+    
+    -- Business Details (wholesale)
+    business_type NVARCHAR(100),
+    delivery_frequency NVARCHAR(50),
+    estimated_volume NVARCHAR(100),
+    
+    -- Common
+    items NVARCHAR(MAX) NOT NULL,  -- JSON array of {productId, quantity, notes}
+    additional_notes NVARCHAR(MAX),
+    how_did_you_hear NVARCHAR(255),
+    
+    created_at DATETIME2 DEFAULT GETUTCDATE(),
+    updated_at DATETIME2 DEFAULT GETUTCDATE(),
+    responded_at DATETIME2,
+    responded_by NVARCHAR(255)
+);
+
+-- Update products table for images
+ALTER TABLE products ADD 
+    image_hero NVARCHAR(500),
+    image_detail NVARCHAR(500),
+    image_slice NVARCHAR(500),
+    minimum_catering_quantity INT DEFAULT 2,  -- Minimum dozens for catering
+    wholesale_case_size INT DEFAULT 6;        -- Units per wholesale case
+
+-- Update partner_locations for enhanced data
+ALTER TABLE partner_locations ADD
+    partner_type NVARCHAR(50),
+    description NVARCHAR(500),
+    image_url NVARCHAR(500),
+    is_featured BIT DEFAULT 0,
+    delivery_days NVARCHAR(100),  -- JSON array: ["monday","wednesday","friday"]
+    hours NVARCHAR(500);          -- JSON object with daily hours
+
+-- Create index for location-product queries
+CREATE INDEX idx_location_products ON partner_locations(id) INCLUDE (products_available
