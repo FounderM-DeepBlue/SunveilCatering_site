@@ -1,5 +1,5 @@
 import { Facebook, Instagram, Twitter, MapPin, Mail, Phone } from "lucide-react";
-import logo from "@assets/2_1768354997788.png";
+import logo from "@assets/1_background_removed_1768426374235.png";
 
 export function Footer() {
   return (
@@ -7,7 +7,7 @@ export function Footer() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="space-y-4">
-            <img src={logo} alt="Sunveil Catering" className="h-16 w-auto brightness-0 invert opacity-90" />
+            <img src={logo} alt="Sunveil Catering" className="h-24 w-auto brightness-0 invert opacity-90" />
             <p className="text-sm opacity-80 leading-relaxed max-w-xs">
               Pastries crafted from Somali tradition, baked fresh daily in Atlanta. Bringing the warmth of Mogadishu to your morning.
             </p>
