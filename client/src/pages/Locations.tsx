@@ -13,30 +13,30 @@ const locations = [
     name: "Black Coffee Company",
     address: "1800 Jonesboro Rd SE, Atlanta, GA 30315",
     type: "Coffee Shop",
-    hours: "Mon-Sat 7am-4pm",
-    phone: "(555) 123-4567",
-    products: ["Sabaayad", "Buskud", "Muffins"],
+    hours: "Mon-Sun 7am-6pm",
+    phone: "",
+    products: ["Full Menu"],
     coords: [33.7077, -84.3640] as [number, number]
   },
   {
     id: 2,
-    name: "East Lake Farmers Market",
-    address: "2nd & Hosea, Atlanta, GA",
-    type: "Market",
-    hours: "Saturdays 8am-12pm",
+    name: "Black Coffee Company",
+    address: "830 Westview Dr SW, Atlanta, GA",
+    type: "Coffee Shop",
+    hours: "Mon-Sun 7am-6pm",
     phone: "",
     products: ["Full Menu"],
-    coords: [33.7487, -84.3129] as [number, number]
+    coords: [33.74645, -84.41527] as [number, number]
   },
   {
     id: 3,
-    name: "Grant Park Market",
-    address: "519 Memorial Dr SE, Atlanta, GA 30312",
-    type: "Grocery",
-    hours: "Daily 8am-9pm",
-    phone: "(555) 987-6543",
-    products: ["Bread Loaves", "Cookies"],
-    coords: [33.7466, -84.3725] as [number, number]
+    name: "Black Coffee Company",
+    address: "80 Jesse Hill Jr Dr SE, Atlanta, GA",
+    type: "Coffee Shop",
+    hours: "Mon-Sun 7am-6pm",
+    phone: "",
+    products: ["Full Menu"],
+    coords: [33.7520615, -84.3821977] as [number, number]
   }
 ];
 

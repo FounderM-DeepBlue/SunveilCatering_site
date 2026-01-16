@@ -1,4 +1,4 @@
-import { Facebook, Instagram, MapPin, Mail, Phone } from "lucide-react";
+import { Facebook, Instagram, MapPin, Mail } from "lucide-react";
 import logo from "@assets/1_background_removed_1768426374235.png";
 
 // Custom TikTok Icon component to match Lucide style
@@ -32,9 +32,9 @@ export function Footer() {
               Pastries crafted from Somali tradition, baked fresh daily in Atlanta. Bringing the warmth of Mogadishu to your morning.
             </p>
             <div className="flex gap-4 pt-2">
-              <a href="#" className="hover:text-[hsl(var(--color-amber))] transition-colors"><Instagram className="w-5 h-5" /></a>
+              <a href="https://www.instagram.com/sunveilcatering/" target="_blank" rel="noopener noreferrer" className="hover:text-[hsl(var(--color-amber))] transition-colors"><Instagram className="w-5 h-5" /></a>
               <a href="#" className="hover:text-[hsl(var(--color-amber))] transition-colors"><Facebook className="w-5 h-5" /></a>
-              <a href="#" className="hover:text-[hsl(var(--color-amber))] transition-colors"><TikTok className="w-5 h-5" /></a>
+              <a href="https://www.tiktok.com/@sunveilcatering" target="_blank" rel="noopener noreferrer" className="hover:text-[hsl(var(--color-amber))] transition-colors"><TikTok className="w-5 h-5" /></a>
             </div>
           </div>
 
@@ -58,11 +58,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-[hsl(var(--color-amber))]" />
-                <a href="mailto:sunveilcatering@gmail.com" className="hover:underline">sunveilcatering@gmail.com</a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-[hsl(var(--color-amber))]" />
-                <span>(555) 123-4567</span>
+                <a href="mailto:info@sunveilcatering.com" className="hover:underline">info@sunveilcatering.com</a>
               </li>
             </ul>
           </div>
