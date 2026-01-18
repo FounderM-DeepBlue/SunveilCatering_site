@@ -126,7 +126,12 @@ export function CartDrawer() {
                  <span>Subtotal</span>
                  <span>${totalPrice.toFixed(2)}</span>
                </div>
-               <button className="w-full bg-[hsl(var(--color-forest))] text-white font-bold py-3 rounded-md hover:bg-[hsl(var(--color-deep-forest))] transition-colors shadow-lg">
+               <button 
+                 onClick={() => {
+                   onClose();
+                   window.location.href = '/checkout';
+                 }}
+                 className="w-full bg-[hsl(var(--color-forest))] text-white font-bold py-3 rounded-md hover:bg-[hsl(var(--color-deep-forest))] transition-colors shadow-lg">
                  Checkout
                </button>
             </div>
