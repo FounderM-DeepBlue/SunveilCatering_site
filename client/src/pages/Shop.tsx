@@ -167,7 +167,7 @@ export default function Shop() {
         />
         
         <Dialog open={showNotice} onOpenChange={handleOpenChange}>
-          <DialogContent className="max-w-2xl bg-[hsl(var(--color-cream))] border-[hsl(var(--color-border))]">
+          <DialogContent className="max-w-4xl bg-[hsl(var(--color-cream))] border-[hsl(var(--color-border))]">
             <DialogTitle className="sr-only">Order Cutoff Notice</DialogTitle>
             <DialogDescription className="sr-only">
               Orders placed by Tuesday at 11:59 PM will be available for pickup on Friday of the same week.
