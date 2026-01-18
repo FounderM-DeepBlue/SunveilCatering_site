@@ -18,8 +18,18 @@ export default function Shop() {
   const [showNotice, setShowNotice] = useState(false);
 
   useEffect(() => {
-    setShowNotice(true);
+    const hasSeenNotice = localStorage.getItem("hasSeenOrderNotice");
+    if (!hasSeenNotice) {
+      setShowNotice(true);
+    }
   }, []);
+
+  const handleOpenChange = (open: boolean) => {
+    setShowNotice(open);
+    if (!open) {
+      localStorage.setItem("hasSeenOrderNotice", "true");
+    }
+  };
   
   // Cart State from Context
   const { cart, addToCart, setIsCartOpen } = useCart();
@@ -156,7 +166,7 @@ export default function Shop() {
           onCompleteBox={completeBox}
         />
         
-        <Dialog open={showNotice} onOpenChange={setShowNotice}>
+        <Dialog open={showNotice} onOpenChange={handleOpenChange}>
           <DialogContent className="max-w-2xl bg-[hsl(var(--color-cream))] border-[hsl(var(--color-border))]">
             <DialogTitle className="sr-only">Order Cutoff Notice</DialogTitle>
             <DialogDescription className="sr-only">
