@@ -16,7 +16,6 @@ export default function Checkout() {
   const [location, setLocation] = useLocation();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [deliveryMethod, setDeliveryMethod] = useState<'pickup' | 'delivery'>('pickup');
 
   // Calculate totals
   const subtotal = cart.reduce((sum, item) => {
@@ -29,9 +28,8 @@ export default function Checkout() {
     return sum;
   }, 0);
   
-  const shippingCost = deliveryMethod === 'delivery' ? 15 : 0;
   const tax = subtotal * 0.08;
-  const total = subtotal + tax + shippingCost;
+  const total = subtotal + tax;
 
   const handlePayment = (method: string) => {
     setIsProcessing(true);
@@ -116,26 +114,16 @@ export default function Checkout() {
                 <h2 className="text-xl font-serif font-bold text-[hsl(var(--color-deep-forest))]">Delivery Method</h2>
                 <div className="grid grid-cols-2 gap-4">
                   <div 
-                    onClick={() => setDeliveryMethod('pickup')}
-                    className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-                      deliveryMethod === 'pickup' 
-                        ? 'bg-[hsl(var(--color-cream))]/30 border-[hsl(var(--color-forest))] ring-1 ring-[hsl(var(--color-forest))]' 
-                        : 'border-gray-200 hover:border-[hsl(var(--color-forest))]'
-                    }`}
+                    className="border rounded-lg p-4 cursor-pointer transition-colors bg-[hsl(var(--color-cream))]/30 border-[hsl(var(--color-forest))] ring-1 ring-[hsl(var(--color-forest))]"
                   >
                     <div className="font-bold text-[hsl(var(--color-deep-forest))]">Pickup</div>
                     <div className="text-sm text-[hsl(var(--color-moss))]">Free</div>
                   </div>
                   <div 
-                    onClick={() => setDeliveryMethod('delivery')}
-                    className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-                      deliveryMethod === 'delivery' 
-                        ? 'bg-[hsl(var(--color-cream))]/30 border-[hsl(var(--color-forest))] ring-1 ring-[hsl(var(--color-forest))]' 
-                        : 'border-gray-200 hover:border-[hsl(var(--color-forest))]'
-                    }`}
+                    className="border rounded-lg p-4 cursor-not-allowed opacity-50 border-gray-200"
                   >
                     <div className="font-bold text-[hsl(var(--color-deep-forest))]">Delivery</div>
-                    <div className="text-sm text-[hsl(var(--color-moss))]">$15.00</div>
+                    <div className="text-sm text-[hsl(var(--color-moss))]">Not Available</div>
                   </div>
                 </div>
               </div>
@@ -253,7 +241,7 @@ export default function Checkout() {
                   </div>
                   <div className="flex justify-between text-[hsl(var(--color-moss))]">
                     <span>Shipping</span>
-                    <span>{shippingCost === 0 ? 'Free' : `$${shippingCost.toFixed(2)}`}</span>
+                    <span>Free</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between text-xl font-serif font-bold text-[hsl(var(--color-deep-forest))] pt-2">

@@ -80,7 +80,12 @@ export function CartDrawer() {
                       <div>
                         <div className="flex items-center justify-between mb-2">
                            <h3 className="font-bold text-[hsl(var(--color-deep-forest))]">Mixed Dozen Box</h3>
-                           <span className="font-bold text-[hsl(var(--color-forest))]">$28.00</span>
+                           <div className="flex items-center gap-2">
+                             <span className="text-xs bg-[hsl(var(--color-forest))] text-white px-2 py-0.5 rounded-full">
+                               Qty: {item.quantity}
+                             </span>
+                             <span className="font-bold text-[hsl(var(--color-forest))]">$28.00</span>
+                           </div>
                         </div>
                         <div className="flex flex-wrap gap-1">
                           {item.items?.map((pid, idx) => {
@@ -109,8 +114,13 @@ export function CartDrawer() {
                                 <p className="text-xs text-[hsl(var(--color-moss))] mb-1">
                                   {product?.unitLabel === 'per loaf' ? '1 Loaf' : '1 Dozen'}
                                 </p>
-                                <div className="font-bold text-[hsl(var(--color-forest))]">
-                                  ${product?.price}.00
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs bg-[hsl(var(--color-forest))] text-white px-2 py-0.5 rounded-full">
+                                    Qty: {item.quantity}
+                                  </span>
+                                  <div className="font-bold text-[hsl(var(--color-forest))]">
+                                    ${product?.price}.00
+                                  </div>
                                 </div>
                               </div>
                             </>
