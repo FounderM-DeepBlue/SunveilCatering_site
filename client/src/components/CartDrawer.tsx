@@ -1,10 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Trash2 } from "lucide-react";
+import { useLocation } from "wouter";
 import { products } from "@/lib/data";
 import { useCart } from "@/lib/CartContext";
 
 export function CartDrawer() {
   const { cart, removeFromCart, isCartOpen, setIsCartOpen } = useCart();
+  const [_, setLocation] = useLocation();
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   
   // Calculate total price (Mock logic)
@@ -78,7 +80,12 @@ export function CartDrawer() {
                       <div>
                         <div className="flex items-center justify-between mb-2">
                            <h3 className="font-bold text-[hsl(var(--color-deep-forest))]">Mixed Dozen Box</h3>
-                           <span className="font-bold text-[hsl(var(--color-forest))]">$28.00</span>
+                           <div className="flex items-center gap-2">
+                             <span className="text-xs bg-[hsl(var(--color-forest))] text-white px-2 py-0.5 rounded-full">
+                               Qty: {item.quantity}
+                             </span>
+                             <span className="font-bold text-[hsl(var(--color-forest))]">$28.00</span>
+                           </div>
                         </div>
                         <div className="flex flex-wrap gap-1">
                           {item.items?.map((pid, idx) => {
@@ -107,8 +114,13 @@ export function CartDrawer() {
                                 <p className="text-xs text-[hsl(var(--color-moss))] mb-1">
                                   {product?.unitLabel === 'per loaf' ? '1 Loaf' : '1 Dozen'}
                                 </p>
-                                <div className="font-bold text-[hsl(var(--color-forest))]">
-                                  ${product?.price}.00
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs bg-[hsl(var(--color-forest))] text-white px-2 py-0.5 rounded-full">
+                                    Qty: {item.quantity}
+                                  </span>
+                                  <div className="font-bold text-[hsl(var(--color-forest))]">
+                                    ${product?.price}.00
+                                  </div>
                                 </div>
                               </div>
                             </>
@@ -126,7 +138,12 @@ export function CartDrawer() {
                  <span>Subtotal</span>
                  <span>${totalPrice.toFixed(2)}</span>
                </div>
-               <button className="w-full bg-[hsl(var(--color-forest))] text-white font-bold py-3 rounded-md hover:bg-[hsl(var(--color-deep-forest))] transition-colors shadow-lg">
+               <button 
+                 onClick={() => {
+                   onClose();
+                   setLocation('/checkout');
+                 }}
+                 className="w-full bg-[hsl(var(--color-forest))] text-white font-bold py-3 rounded-md hover:bg-[hsl(var(--color-deep-forest))] transition-colors shadow-lg">
                  Checkout
                </button>
             </div>

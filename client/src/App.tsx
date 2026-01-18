@@ -12,12 +12,14 @@ import OurStory from "@/pages/OurStory";
 import Catering from "@/pages/Catering";
 import Shop from "@/pages/Shop";
 import Locations from "@/pages/Locations";
+import Checkout from "@/pages/Checkout";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/shop" component={Shop} />
+      <Route path="/checkout" component={Checkout} />
       <Route path="/story" component={OurStory} />
       <Route path="/locations" component={Locations} />
       <Route path="/catering" component={Catering} />

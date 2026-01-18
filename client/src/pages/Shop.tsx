@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Filter, Map as MapIcon, Grid, Search, ShoppingBag } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
 import { DozenBoxBuilder } from "@/components/DozenBoxBuilder";
+import { OrderCutoffNotice } from "@/components/OrderCutoffNotice";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { products, locations } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { useCart, CartItem } from "@/lib/CartContext";
@@ -13,6 +15,21 @@ export default function Shop() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [boxItems, setBoxItems] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showNotice, setShowNotice] = useState(false);
+
+  useEffect(() => {
+    const hasSeenNotice = localStorage.getItem("hasSeenOrderNotice");
+    if (!hasSeenNotice) {
+      setShowNotice(true);
+    }
+  }, []);
+
+  const handleOpenChange = (open: boolean) => {
+    setShowNotice(open);
+    if (!open) {
+      localStorage.setItem("hasSeenOrderNotice", "true");
+    }
+  };
   
   // Cart State from Context
   const { cart, addToCart, setIsCartOpen } = useCart();
@@ -86,6 +103,8 @@ export default function Shop() {
             </button>
           </div>
 
+          <OrderCutoffNotice />
+
           {/* Filter Bar */}
           <div className="bg-white p-4 rounded-xl border border-[hsl(var(--color-border))] shadow-sm flex flex-col md:flex-row gap-4 items-center mb-8 sticky top-20 z-30">
             <div className="relative w-full md:w-64">
@@ -147,6 +166,16 @@ export default function Shop() {
           onCompleteBox={completeBox}
         />
         
+        <Dialog open={showNotice} onOpenChange={handleOpenChange}>
+          <DialogContent className="max-w-4xl bg-[hsl(var(--color-cream))] border-[hsl(var(--color-border))]">
+            <DialogTitle className="sr-only">Order Cutoff Notice</DialogTitle>
+            <DialogDescription className="sr-only">
+              Orders placed by Tuesday at 11:59 PM will be available for pickup on Friday of the same week.
+            </DialogDescription>
+            <OrderCutoffNotice variant="popup" />
+          </DialogContent>
+        </Dialog>
+
       </main>
     </div>
   );
