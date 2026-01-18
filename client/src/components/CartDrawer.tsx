@@ -31,7 +31,7 @@ export function CartDrawer() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/50 z-50 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/50 z-[60] backdrop-blur-sm"
           />
           
           {/* Drawer */}
@@ -40,7 +40,7 @@ export function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-2xl flex flex-col"
+            className="fixed inset-y-0 right-0 z-[60] w-full max-w-md bg-white shadow-2xl flex flex-col"
           >
             <div className="p-4 border-b border-[hsl(var(--color-border))] flex items-center justify-between bg-[hsl(var(--color-cream))]">
               <h2 className="font-serif font-bold text-xl text-[hsl(var(--color-deep-forest))] flex items-center gap-2">

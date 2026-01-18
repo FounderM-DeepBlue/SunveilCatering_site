@@ -82,7 +82,7 @@ export default function OurStory() {
               <motion.span {...fadeIn} className="text-[hsl(var(--color-amber))] font-bold tracking-widest uppercase text-sm mb-4 block">
                 No Shortcuts. No Preservatives.
               </motion.span>
-              <motion.h2 {...fadeIn} className="text-4xl md:text-5xl font-serif font-bold mb-8">
+              <motion.h2 {...fadeIn} className="text-4xl md:text-5xl font-serif font-bold mb-8 text-white">
                 When we say "from scratch,"<br/>we mean it.
               </motion.h2>
               <motion.p {...fadeIn} className="text-lg opacity-90 leading-relaxed mb-8">
