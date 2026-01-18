@@ -1,10 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Trash2 } from "lucide-react";
+import { useLocation } from "wouter";
 import { products } from "@/lib/data";
 import { useCart } from "@/lib/CartContext";
 
 export function CartDrawer() {
   const { cart, removeFromCart, isCartOpen, setIsCartOpen } = useCart();
+  const [_, setLocation] = useLocation();
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   
   // Calculate total price (Mock logic)
@@ -129,7 +131,7 @@ export function CartDrawer() {
                <button 
                  onClick={() => {
                    onClose();
-                   window.location.href = '/checkout';
+                   setLocation('/checkout');
                  }}
                  className="w-full bg-[hsl(var(--color-forest))] text-white font-bold py-3 rounded-md hover:bg-[hsl(var(--color-deep-forest))] transition-colors shadow-lg">
                  Checkout
