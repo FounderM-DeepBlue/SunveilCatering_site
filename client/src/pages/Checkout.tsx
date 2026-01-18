@@ -19,10 +19,14 @@ export default function Checkout() {
   const [deliveryMethod, setDeliveryMethod] = useState<'pickup' | 'delivery'>('pickup');
 
   // Calculate totals
-  const subtotal = cart.reduce((acc, item) => {
-    // For now assuming all items (boxes and dozens) are same price or based on logic
-    // You might need to adjust this based on your actual pricing model
-    return acc + (item.quantity * 45); // Assuming $45 per dozen/box for mockup
+  const subtotal = cart.reduce((sum, item) => {
+    if (item.type === 'box') {
+      return sum + (28 * item.quantity); 
+    } else if (item.productId) {
+      const product = products.find(p => p.id === item.productId);
+      return sum + ((product?.price || 0) * item.quantity);
+    }
+    return sum;
   }, 0);
   
   const shippingCost = deliveryMethod === 'delivery' ? 15 : 0;
@@ -227,7 +231,11 @@ export default function Checkout() {
                           </div>
                         </div>
                         <div className="font-medium text-[hsl(var(--color-deep-forest))]">
-                          $45.00
+                          ${item.type === 'box' 
+                            ? (28 * item.quantity).toFixed(2) 
+                            : products.find(p => p.id === item.productId)?.price 
+                              ? (products.find(p => p.id === item.productId)!.price * item.quantity).toFixed(2)
+                              : '0.00'}
                         </div>
                       </div>
                     );
