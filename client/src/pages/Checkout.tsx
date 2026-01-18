@@ -16,6 +16,7 @@ export default function Checkout() {
   const [location, setLocation] = useLocation();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [deliveryMethod, setDeliveryMethod] = useState<'pickup' | 'delivery'>('pickup');
 
   // Calculate totals
   const subtotal = cart.reduce((acc, item) => {
@@ -24,8 +25,9 @@ export default function Checkout() {
     return acc + (item.quantity * 45); // Assuming $45 per dozen/box for mockup
   }, 0);
   
+  const shippingCost = deliveryMethod === 'delivery' ? 15 : 0;
   const tax = subtotal * 0.08;
-  const total = subtotal + tax;
+  const total = subtotal + tax + shippingCost;
 
   const handlePayment = (method: string) => {
     setIsProcessing(true);
@@ -109,11 +111,25 @@ export default function Checkout() {
               <div className="bg-white p-6 rounded-xl border border-[hsl(var(--color-border))] space-y-4">
                 <h2 className="text-xl font-serif font-bold text-[hsl(var(--color-deep-forest))]">Delivery Method</h2>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="border rounded-lg p-4 cursor-pointer hover:border-[hsl(var(--color-forest))] transition-colors bg-[hsl(var(--color-cream))]/30 border-[hsl(var(--color-forest))]">
+                  <div 
+                    onClick={() => setDeliveryMethod('pickup')}
+                    className={`border rounded-lg p-4 cursor-pointer transition-colors ${
+                      deliveryMethod === 'pickup' 
+                        ? 'bg-[hsl(var(--color-cream))]/30 border-[hsl(var(--color-forest))] ring-1 ring-[hsl(var(--color-forest))]' 
+                        : 'border-gray-200 hover:border-[hsl(var(--color-forest))]'
+                    }`}
+                  >
                     <div className="font-bold text-[hsl(var(--color-deep-forest))]">Pickup</div>
                     <div className="text-sm text-[hsl(var(--color-moss))]">Free</div>
                   </div>
-                  <div className="border rounded-lg p-4 cursor-pointer hover:border-[hsl(var(--color-forest))] transition-colors border-gray-200">
+                  <div 
+                    onClick={() => setDeliveryMethod('delivery')}
+                    className={`border rounded-lg p-4 cursor-pointer transition-colors ${
+                      deliveryMethod === 'delivery' 
+                        ? 'bg-[hsl(var(--color-cream))]/30 border-[hsl(var(--color-forest))] ring-1 ring-[hsl(var(--color-forest))]' 
+                        : 'border-gray-200 hover:border-[hsl(var(--color-forest))]'
+                    }`}
+                  >
                     <div className="font-bold text-[hsl(var(--color-deep-forest))]">Delivery</div>
                     <div className="text-sm text-[hsl(var(--color-moss))]">$15.00</div>
                   </div>
@@ -181,24 +197,41 @@ export default function Checkout() {
                 <h2 className="text-xl font-serif font-bold text-[hsl(var(--color-deep-forest))] mb-6">Order Summary</h2>
                 
                 <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 scrollbar-thin mb-6">
-                  {cart.map((item) => (
-                    <div key={item.id} className="flex gap-4 py-4 border-b last:border-0">
-                      <div className="bg-gray-100 w-16 h-16 rounded-md flex items-center justify-center text-xs text-gray-500">
-                        IMG
-                      </div>
-                      <div className="flex-1">
+                  {cart.map((item) => {
+                    // Determine image logic
+                    let imageSrc = null;
+                    if (item.type === 'box' && item.items && item.items.length > 0) {
+                      // For box, use the first item's image
+                      const firstProduct = products.find(p => p.id === item.items![0]);
+                      imageSrc = firstProduct?.image;
+                    } else if (item.productId) {
+                      const product = products.find(p => p.id === item.productId);
+                      imageSrc = product?.image;
+                    }
+
+                    return (
+                      <div key={item.id} className="flex gap-4 py-4 border-b last:border-0">
+                        <div className="bg-gray-100 w-16 h-16 rounded-md flex items-center justify-center text-xs text-gray-500 overflow-hidden shrink-0">
+                          {imageSrc ? (
+                            <img src={imageSrc} alt="Product" className="w-full h-full object-cover" />
+                          ) : (
+                            "IMG"
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <div className="font-medium text-[hsl(var(--color-deep-forest))]">
+                            {item.type === 'box' ? 'Custom Dozen Box' : 'Dozen Pastries'}
+                          </div>
+                          <div className="text-sm text-[hsl(var(--color-moss))]">
+                            Qty: {item.quantity}
+                          </div>
+                        </div>
                         <div className="font-medium text-[hsl(var(--color-deep-forest))]">
-                          {item.type === 'box' ? 'Custom Dozen Box' : 'Dozen Pastries'}
-                        </div>
-                        <div className="text-sm text-[hsl(var(--color-moss))]">
-                          Qty: {item.quantity}
+                          $45.00
                         </div>
                       </div>
-                      <div className="font-medium text-[hsl(var(--color-deep-forest))]">
-                        $45.00
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
                 <div className="space-y-3 pt-4 border-t">
@@ -212,7 +245,7 @@ export default function Checkout() {
                   </div>
                   <div className="flex justify-between text-[hsl(var(--color-moss))]">
                     <span>Shipping</span>
-                    <span>Free</span>
+                    <span>{shippingCost === 0 ? 'Free' : `$${shippingCost.toFixed(2)}`}</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between text-xl font-serif font-bold text-[hsl(var(--color-deep-forest))] pt-2">
