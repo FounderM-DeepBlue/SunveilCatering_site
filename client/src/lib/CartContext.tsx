@@ -28,7 +28,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addToCart = (item: CartItem) => {
     setCart((prev) => [...prev, item]);
-    setIsCartOpen(true);
   };
 
   const removeFromCart = (id: string) => {
